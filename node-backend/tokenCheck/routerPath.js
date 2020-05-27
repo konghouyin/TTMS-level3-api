@@ -1,5 +1,5 @@
 const userPoint = 526 //用户信息管理后台
-
+const test = 8080
 
 //服务端口配置
 
@@ -19,6 +19,10 @@ userStatusTable = {
 const router = {
 	"/userAll": {
 		point: userPoint,
+		status: [userStatusTable.userManager]
+	},
+	"/get": {
+		point: test,
 		status: [userStatusTable.userManager]
 	}
 }
