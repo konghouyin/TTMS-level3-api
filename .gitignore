@@ -1,7 +1,9 @@
+
 /node-backend/node_modules 
 /java-backend/.idea
 /java-backend/.mvn
 /java-backend/target
+!/java-backend/target/ttms-0.0.1-SNAPSHOT.jar
 /java-backend/HELP.md
 /java-backend/mvnw
 /java-backend/mvnw.cmd
