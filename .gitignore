@@ -1,1 +1,10 @@
 /node-backend/node_modules 
+/java-backend/.idea
+/java-backend/.mvn
+/java-backend/target
+/java-backend/HELP.md
+/java-backend/mvnw
+/java-backend/mvnw.cmd
+/java-backend/pom.xml
+/java-backend/TTMS-web.iml
+/java-backend/.gitignore
