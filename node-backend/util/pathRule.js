@@ -67,10 +67,17 @@ const playAddRule = {
 	}
 }
 
-const playMainRule={
+const playMainRule = {
 	id: {
 		type: "int",
 		max: 32
+	}
+}
+
+const reportTypeRule = {
+	reporttypeName:{
+		type: "string",
+		max: 15
 	}
 }
 
@@ -88,7 +95,9 @@ const router = {
 	"/TTMS-v3/api/playDel": playMainRule,
 	"/TTMS-v3/api/playEdit": Object.assign({},playAddRule,playMainRule),
 	
-	"/TTMS-v3/api/reportType/all":empty
+	"/TTMS-v3/api/reportType/all":empty,
+	"/TTMS-v3/api/reportType/add":reportTypeRule,
+	"/TTMS-v3/api/reportType/del":reportTypeRule
 }
 
 module.exports = {

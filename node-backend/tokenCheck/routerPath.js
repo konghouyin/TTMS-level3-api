@@ -41,7 +41,10 @@ const router = {
 	"/playDel": managerConfig,
 	"/playEdit": managerConfig,
 	
-	"/reportType/all":reportConfig
+	"/reportType/all":reportConfig,
+	"/reportType/add":reportConfig,
+	"/reportType/del":reportConfig,
+	
 }
 
 module.exports = {
