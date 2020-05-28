@@ -17,19 +17,24 @@ userStatusTable = {
 }
 //权限配置
 
+
+const managerConfig = {
+	point: managerPoint,
+	status: [userStatusTable.manager]
+}
+//配置聚合
+
 const router = {
 	"/userAll": {
 		point: userPoint,
 		status: [userStatusTable.userManager]
 	},
-	"/query": {
-		point: managerPoint,
-		status: [userStatusTable.manager]
-	},
-	"/playAdd": {
-		point: managerPoint,
-		status: [userStatusTable.manager]
-	},
+	"/query": managerConfig,
+	"/playAdd": managerConfig,
+	"/playAll": managerConfig,
+	"/playMain": managerConfig,
+	"/playDel": managerConfig,
+	"/playEdit": managerConfig,
 }
 
 module.exports = {

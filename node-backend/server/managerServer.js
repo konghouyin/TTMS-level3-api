@@ -122,7 +122,7 @@ server.post('/playAdd', async function(req, res) {
 //添加剧目
 
 
-server.get("/playAll", async function(req, res) {
+server.post("/playAll", async function(req, res) {
 	let sqlString = sql.select(['play_id', 'play_name', 'play_director', 'play_performer', 'play_type', 'play_length',
 		'play_country', 'play_language', 'play_status', 'play_pic', 'play_link', 'play_path'
 	], 'play', 'play_status<>-1') + ' ORDER BY play_id DESC';
@@ -144,22 +144,8 @@ server.get("/playAll", async function(req, res) {
 //查询全部剧目
 
 
-server.get("/playMain", async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
+server.post("/playMain", async function(req, res) {
+	let obj = req.obj.data;
 	let sqlString = sql.select(['play_id', 'play_name', 'play_director', 'play_performer', 'play_type', 'play_length',
 		'play_country', 'play_language', 'play_status', 'play_pic', 'play_link', 'play_message', 'play_path'
 	], 'play', 'play_status<>-1 and play_id=' + sql.escape(obj.id));
@@ -190,21 +176,7 @@ server.get("/playMain", async function(req, res) {
 
 
 server.post("/playDel", async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
+	let obj = req.obj.data;
 	let sqlStringSelect = sql.select(['play_path'], 'play', 'play_status<>-1 and play_id=' + sql.escape(obj.id));
 	try {
 		var selectAns = await sql.sever(pool, sqlStringSelect);
@@ -264,57 +236,7 @@ server.post("/playDel", async function(req, res) {
 
 
 server.post("/playEdit", async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		},
-		name: {
-			length: 64
-		},
-		director: {
-			length: 32
-		},
-		actor: {
-			length: 128
-		},
-		type: {
-			length: 32
-		},
-		timelong: {
-			type: "int",
-			length: 32
-		},
-		country: {
-			length: 32
-		},
-		language: {
-			length: 32
-		},
-		status: {
-			type: "only",
-			main: ["已上映", "即将上映", "已下线"],
-			length: 32
-		},
-		pic: {
-			length: 200
-		},
-		link: {
-			length: 200
-		},
-		url: {
-			length: 200
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
+	let obj = req.obj.data;
 	let sqlStringSelect = sql.select(['play_path'], 'play', 'play_status<>-1 and play_id=' + sql.escape(obj.id));
 	try {
 		var selectAns = await sql.sever(pool, sqlStringSelect);
@@ -335,7 +257,7 @@ server.post("/playEdit", async function(req, res) {
 	let waring = "null";
 	obj.main = "";
 	if (obj.url != "") {
-		let pathCtrl = await path("http://localhost:798/path/index", {
+		let pathCtrl = await path("http://132.232.169.227:798/path/index", {
 			url: obj.url
 		});
 		if (pathCtrl.style == 1) {
@@ -373,7 +295,7 @@ server.post("/playEdit", async function(req, res) {
 
 
 server.post("/roomAdd", async function(req, res) {
-	let obj = req.obj;
+	let obj = req.obj.data;
 	let judgeOptions = {
 		name: {
 			length: 64
@@ -458,7 +380,7 @@ server.get("/roomAll", async function(req, res) {
 
 
 server.get("/roomMain", async function(req, res) {
-	let obj = req.obj;
+	let obj = req.obj.data;
 	let judgeOptions = {
 		id: {
 			type: "int",
@@ -520,7 +442,7 @@ server.get("/roomMain", async function(req, res) {
 
 
 server.post("/roomDel", async function(req, res) {
-	let obj = req.obj;
+	let obj = req.obj.data;
 	let judgeOptions = {
 		id: {
 			type: "int",
@@ -603,7 +525,7 @@ server.post("/roomDel", async function(req, res) {
 
 
 server.post("/roomEdit", async function(req, res) {
-	let obj = req.obj;
+	let obj = req.obj.data;
 	let judgeOptions = {
 		name: {
 			length: 64
@@ -740,7 +662,7 @@ server.post("/roomEdit", async function(req, res) {
 //编辑剧目
 
 server.post("/planAdd", async function(req, res) {
-	let obj = req.obj;
+	let obj = req.obj.data;
 	let judgeOptions = {
 		plan: {
 			type: "Array",
@@ -894,7 +816,7 @@ server.post("/planAdd", async function(req, res) {
 })
 
 server.get('/planGet', async function(req, res) {
-	let obj = req.obj;
+	let obj = req.obj.data;
 	let judgeOptions = {
 		time: {
 			length: 1000000
