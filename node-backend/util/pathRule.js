@@ -78,13 +78,17 @@ const playMainRule={
 const router = {
 	"/TTMS-v3/account/reg": accountRule,
 	"/TTMS-v3/account/login": accountRule,
+	
 	"/TTMS-v3/api/userAll": empty,
+	
 	"/TTMS-v3/api/query": queryRule,
 	"/TTMS-v3/api/playAdd": playAddRule,
 	"/TTMS-v3/api/playAll": empty,
 	"/TTMS-v3/api/playMain": playMainRule,
 	"/TTMS-v3/api/playDel": playMainRule,
 	"/TTMS-v3/api/playEdit": Object.assign({},playAddRule,playMainRule),
+	
+	"/TTMS-v3/api/reportType/all":empty
 }
 
 module.exports = {
