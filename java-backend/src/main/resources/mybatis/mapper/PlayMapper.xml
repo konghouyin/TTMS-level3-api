@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.ttms.mapper.PlayMapper">
+  <resultMap id="BaseResultMap" type="com.xupt.ttms.model.Play">
+    <id column="play_id" jdbcType="INTEGER" property="playId" />
+    <result column="play_name" jdbcType="VARCHAR" property="playName" />
+    <result column="play_director" jdbcType="VARCHAR" property="playDirector" />
+    <result column="play_performer" jdbcType="VARCHAR" property="playPerformer" />
+    <result column="play_type" jdbcType="VARCHAR" property="playType" />
+    <result column="play_length" jdbcType="VARCHAR" property="playLength" />
+    <result column="play_country" jdbcType="VARCHAR" property="playCountry" />
+    <result column="play_language" jdbcType="VARCHAR" property="playLanguage" />
+    <result column="play_status" jdbcType="VARCHAR" property="playStatus" />
+    <result column="play_pic" jdbcType="VARCHAR" property="playPic" />
+    <result column="play_link" jdbcType="VARCHAR" property="playLink" />
+    <result column="play_path" jdbcType="VARCHAR" property="playPath" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xupt.ttms.model.Play">
+    <result column="play_message" jdbcType="LONGVARCHAR" property="playMessage" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    play_id, play_name, play_director, play_performer, play_type, play_length, play_country, 
+    play_language, play_status, play_pic, play_link, play_path
+  </sql>
+  <sql id="Blob_Column_List">
+    play_message
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xupt.ttms.model.PlayExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from play
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xupt.ttms.model.PlayExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from play
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from play
+    where play_id = #{playId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from play
+    where play_id = #{playId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xupt.ttms.model.PlayExample">
+    delete from play
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xupt.ttms.model.Play">
+    insert into play (play_id, play_name, play_director, 
+      play_performer, play_type, play_length, 
+      play_country, play_language, play_status, 
+      play_pic, play_link, play_path, 
+      play_message)
+    values (#{playId,jdbcType=INTEGER}, #{playName,jdbcType=VARCHAR}, #{playDirector,jdbcType=VARCHAR}, 
+      #{playPerformer,jdbcType=VARCHAR}, #{playType,jdbcType=VARCHAR}, #{playLength,jdbcType=VARCHAR}, 
+      #{playCountry,jdbcType=VARCHAR}, #{playLanguage,jdbcType=VARCHAR}, #{playStatus,jdbcType=VARCHAR}, 
+      #{playPic,jdbcType=VARCHAR}, #{playLink,jdbcType=VARCHAR}, #{playPath,jdbcType=VARCHAR}, 
+      #{playMessage,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xupt.ttms.model.Play">
+    insert into play
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="playId != null">
+        play_id,
+      </if>
+      <if test="playName != null">
+        play_name,
+      </if>
+      <if test="playDirector != null">
+        play_director,
+      </if>
+      <if test="playPerformer != null">
+        play_performer,
+      </if>
+      <if test="playType != null">
+        play_type,
+      </if>
+      <if test="playLength != null">
+        play_length,
+      </if>
+      <if test="playCountry != null">
+        play_country,
+      </if>
+      <if test="playLanguage != null">
+        play_language,
+      </if>
+      <if test="playStatus != null">
+        play_status,
+      </if>
+      <if test="playPic != null">
+        play_pic,
+      </if>
+      <if test="playLink != null">
+        play_link,
+      </if>
+      <if test="playPath != null">
+        play_path,
+      </if>
+      <if test="playMessage != null">
+        play_message,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="playId != null">
+        #{playId,jdbcType=INTEGER},
+      </if>
+      <if test="playName != null">
+        #{playName,jdbcType=VARCHAR},
+      </if>
+      <if test="playDirector != null">
+        #{playDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="playPerformer != null">
+        #{playPerformer,jdbcType=VARCHAR},
+      </if>
+      <if test="playType != null">
+        #{playType,jdbcType=VARCHAR},
+      </if>
+      <if test="playLength != null">
+        #{playLength,jdbcType=VARCHAR},
+      </if>
+      <if test="playCountry != null">
+        #{playCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="playLanguage != null">
+        #{playLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="playStatus != null">
+        #{playStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="playPic != null">
+        #{playPic,jdbcType=VARCHAR},
+      </if>
+      <if test="playLink != null">
+        #{playLink,jdbcType=VARCHAR},
+      </if>
+      <if test="playPath != null">
+        #{playPath,jdbcType=VARCHAR},
+      </if>
+      <if test="playMessage != null">
+        #{playMessage,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xupt.ttms.model.PlayExample" resultType="java.lang.Long">
+    select count(*) from play
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update play
+    <set>
+      <if test="record.playId != null">
+        play_id = #{record.playId,jdbcType=INTEGER},
+      </if>
+      <if test="record.playName != null">
+        play_name = #{record.playName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playDirector != null">
+        play_director = #{record.playDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playPerformer != null">
+        play_performer = #{record.playPerformer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playType != null">
+        play_type = #{record.playType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playLength != null">
+        play_length = #{record.playLength,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playCountry != null">
+        play_country = #{record.playCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playLanguage != null">
+        play_language = #{record.playLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playStatus != null">
+        play_status = #{record.playStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playPic != null">
+        play_pic = #{record.playPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playLink != null">
+        play_link = #{record.playLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playPath != null">
+        play_path = #{record.playPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.playMessage != null">
+        play_message = #{record.playMessage,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update play
+    set play_id = #{record.playId,jdbcType=INTEGER},
+      play_name = #{record.playName,jdbcType=VARCHAR},
+      play_director = #{record.playDirector,jdbcType=VARCHAR},
+      play_performer = #{record.playPerformer,jdbcType=VARCHAR},
+      play_type = #{record.playType,jdbcType=VARCHAR},
+      play_length = #{record.playLength,jdbcType=VARCHAR},
+      play_country = #{record.playCountry,jdbcType=VARCHAR},
+      play_language = #{record.playLanguage,jdbcType=VARCHAR},
+      play_status = #{record.playStatus,jdbcType=VARCHAR},
+      play_pic = #{record.playPic,jdbcType=VARCHAR},
+      play_link = #{record.playLink,jdbcType=VARCHAR},
+      play_path = #{record.playPath,jdbcType=VARCHAR},
+      play_message = #{record.playMessage,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update play
+    set play_id = #{record.playId,jdbcType=INTEGER},
+      play_name = #{record.playName,jdbcType=VARCHAR},
+      play_director = #{record.playDirector,jdbcType=VARCHAR},
+      play_performer = #{record.playPerformer,jdbcType=VARCHAR},
+      play_type = #{record.playType,jdbcType=VARCHAR},
+      play_length = #{record.playLength,jdbcType=VARCHAR},
+      play_country = #{record.playCountry,jdbcType=VARCHAR},
+      play_language = #{record.playLanguage,jdbcType=VARCHAR},
+      play_status = #{record.playStatus,jdbcType=VARCHAR},
+      play_pic = #{record.playPic,jdbcType=VARCHAR},
+      play_link = #{record.playLink,jdbcType=VARCHAR},
+      play_path = #{record.playPath,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xupt.ttms.model.Play">
+    update play
+    <set>
+      <if test="playName != null">
+        play_name = #{playName,jdbcType=VARCHAR},
+      </if>
+      <if test="playDirector != null">
+        play_director = #{playDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="playPerformer != null">
+        play_performer = #{playPerformer,jdbcType=VARCHAR},
+      </if>
+      <if test="playType != null">
+        play_type = #{playType,jdbcType=VARCHAR},
+      </if>
+      <if test="playLength != null">
+        play_length = #{playLength,jdbcType=VARCHAR},
+      </if>
+      <if test="playCountry != null">
+        play_country = #{playCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="playLanguage != null">
+        play_language = #{playLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="playStatus != null">
+        play_status = #{playStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="playPic != null">
+        play_pic = #{playPic,jdbcType=VARCHAR},
+      </if>
+      <if test="playLink != null">
+        play_link = #{playLink,jdbcType=VARCHAR},
+      </if>
+      <if test="playPath != null">
+        play_path = #{playPath,jdbcType=VARCHAR},
+      </if>
+      <if test="playMessage != null">
+        play_message = #{playMessage,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where play_id = #{playId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xupt.ttms.model.Play">
+    update play
+    set play_name = #{playName,jdbcType=VARCHAR},
+      play_director = #{playDirector,jdbcType=VARCHAR},
+      play_performer = #{playPerformer,jdbcType=VARCHAR},
+      play_type = #{playType,jdbcType=VARCHAR},
+      play_length = #{playLength,jdbcType=VARCHAR},
+      play_country = #{playCountry,jdbcType=VARCHAR},
+      play_language = #{playLanguage,jdbcType=VARCHAR},
+      play_status = #{playStatus,jdbcType=VARCHAR},
+      play_pic = #{playPic,jdbcType=VARCHAR},
+      play_link = #{playLink,jdbcType=VARCHAR},
+      play_path = #{playPath,jdbcType=VARCHAR},
+      play_message = #{playMessage,jdbcType=LONGVARCHAR}
+    where play_id = #{playId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xupt.ttms.model.Play">
+    update play
+    set play_name = #{playName,jdbcType=VARCHAR},
+      play_director = #{playDirector,jdbcType=VARCHAR},
+      play_performer = #{playPerformer,jdbcType=VARCHAR},
+      play_type = #{playType,jdbcType=VARCHAR},
+      play_length = #{playLength,jdbcType=VARCHAR},
+      play_country = #{playCountry,jdbcType=VARCHAR},
+      play_language = #{playLanguage,jdbcType=VARCHAR},
+      play_status = #{playStatus,jdbcType=VARCHAR},
+      play_pic = #{playPic,jdbcType=VARCHAR},
+      play_link = #{playLink,jdbcType=VARCHAR},
+      play_path = #{playPath,jdbcType=VARCHAR}
+    where play_id = #{playId,jdbcType=INTEGER}
+  </update>
+</mapper>
