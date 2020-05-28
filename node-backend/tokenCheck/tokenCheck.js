@@ -116,7 +116,7 @@ serverApi.all('*', async function(req, res) {
 			method: "POST",
 			url: `http://localhost:${checkInfo.point}${req._parsedUrl.pathname}`,
 			body: JSON.stringify({
-				data: req.obj,
+				data: req.obj.data,
 				userInfo: userInfo.info
 			})
 		};
