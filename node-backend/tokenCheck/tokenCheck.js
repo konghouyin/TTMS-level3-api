@@ -26,33 +26,25 @@ serverAccount.post('/reg', async function(req, res) {
 	let sqlString = sql.select(['user_name'], 'user', `user_name=${sql.escape(obj.name)}`);
 	try {
 		var selectRepeat = await sql.sever(pool, sqlString);
+		if (selectRepeat.length == 0) {
+			let sqlString = sql.insert('user', ['user_status', 'user_name', 'user_password', 'user_time'],
+				['1', sql.escape(obj.name), sql.escape(obj.password), 'NOW()']);
+			await sql.sever(pool, sqlString);
+			send(res, {
+				"msg": "注册成功",
+				"style": 1
+			})
+		} else {
+			send(res, {
+				"msg": "注册失败--用户名重复",
+				"style": 0
+			})
+		}
 	} catch (err) {
 		send({
 			"msg": err,
 			"style": -2
 		});
-	}
-	if (selectRepeat.length == 0) {
-		let sqlString = sql.insert('user', ['user_status', 'user_name', 'user_password', 'user_time'],
-			['', sql.escape(obj.name), sql.escape(obj.password), 'NOW()']);
-		try {
-			await sql.sever(pool, sqlString);
-		} catch (err) {
-			send({
-				"msg": err,
-				"style": -2
-			});
-			return;
-		}
-		send(res, {
-			"msg": "注册成功",
-			"style": 1
-		})
-	} else {
-		send(res, {
-			"msg": "注册失败--用户名重复",
-			"style": 0
-		})
 	}
 });
 //用户注册
@@ -90,7 +82,7 @@ serverAccount.post('/login', async function(req, res) {
 //系统登录
 
 
-serverApi.get('*', async function(req, res) {
+serverApi.all('*', async function(req, res) {
 	let userInfo = {};
 	if (req.obj.token && (userInfo = TOKEN.verifyTokenMiddle(req.obj.token)) && userInfo.style) {
 
@@ -104,7 +96,6 @@ serverApi.get('*', async function(req, res) {
 			})
 			return
 		}
-
 		let user_status = userInfo.info.user_status.split(',');
 		let isPass = checkInfo.status.reduce((last, item) => {
 			return last || user_status.indexOf(item)

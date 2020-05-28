@@ -1,4 +1,5 @@
 const userPoint = 526 //用户信息管理后台
+const managerPoint = 536 // 剧院经理管理后台
 const test = 8080
 
 //服务端口配置
@@ -21,10 +22,14 @@ const router = {
 		point: userPoint,
 		status: [userStatusTable.userManager]
 	},
-	"/get": {
-		point: test,
-		status: [userStatusTable.userManager]
-	}
+	"/query": {
+		point: managerPoint,
+		status: [userStatusTable.manager]
+	},
+	"/playAdd": {
+		point: managerPoint,
+		status: [userStatusTable.manager]
+	},
 }
 
 module.exports = {

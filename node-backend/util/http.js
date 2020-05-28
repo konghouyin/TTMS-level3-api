@@ -152,49 +152,6 @@ function judge(judge, obj) {
 //审核参数正确性
 
 
-
-// function path(add, qs) {
-// 	return new Promise(function(resolve, reject) {
-// 		try {
-// 			let options = {
-// 				method: 'GET',
-// 				url: add,
-// 				qs: qs,
-// 				headers: {
-// 					'Content-Type': 'application/json'
-// 				}
-// 			};
-// 			request(options, function(error, response, body) {
-// 				if (error) {
-// 					resolve({
-// 						message: "内网连通失败",
-// 						style: 0
-// 					})
-// 				} else {
-// 					if(body[0]==="0"){
-// 						resolve({
-// 							message: body.substring(1),
-// 							style: 0
-// 						})
-// 					}else{
-// 						resolve({
-// 							message: body,
-// 							style: 1
-// 						});
-// 					}
-					
-// 				}
-// 			});
-// 		} catch (e) {
-// 			resolve({
-// 				message: "内网连通失败",
-// 				style: 0
-// 			});
-// 		}
-// 	})
-// }
-//内网爬虫
-
 function getRouter(){
 	return express.Router();
 }
