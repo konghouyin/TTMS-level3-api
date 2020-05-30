@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("report")
 public class ReportController {
@@ -31,7 +33,11 @@ public class ReportController {
         short status = (short) ReportEnum.Processing.getStatus();//待审核
         int userId = transDTO.getUserInfo().getUser_id();
         report.setReportStatus(status);
+
+        Date date = new Date();
         report.setUserId(userId);
+        report.setReportTime(date);
+
         int i = service.reportAdd(report);
         if(i==0){
             uto.setStyle(returnType.DATABASEERR.getStyle());
