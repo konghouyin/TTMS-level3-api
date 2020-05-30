@@ -554,22 +554,7 @@ server.post("/roomEdit", async function(req, res) {
 
 server.post("/planAdd", async function(req, res) {
 	let obj = req.obj.data;
-	let judgeOptions = {
-		plan: {
-			type: "Array",
-			length: 1000000
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-	//参数格式正确性
-
+	
 	let roomArr = [];
 	let playArr = [];
 	for (let index = 0; index < obj.plan.length; index++) {
@@ -577,42 +562,42 @@ server.post("/planAdd", async function(req, res) {
 		if (child.room == undefined) {
 			send(res, {
 				"msg": "list[" + index + "]没有room属性",
-				"style": -1
+				"style": 0
 			});
 			return;
 		}
 		if (child.play == undefined) {
 			send(res, {
 				"msg": "list[" + index + "]没有play属性",
-				"style": -1
+				"style": 0
 			});
 			return;
 		}
 		if (child.money == undefined) {
 			send(res, {
 				"msg": "list[" + index + "]没有money属性",
-				"style": -1
+				"style": 0
 			});
 			return;
 		}
 		if (child.language == undefined) {
 			send(res, {
 				"msg": "list[" + index + "]没有language属性",
-				"style": -1
+				"style": 0
 			});
 			return;
 		}
 		if (child.startime == undefined) {
 			send(res, {
 				"msg": "list[" + index + "]没有startime属性",
-				"style": -1
+				"style":0
 			});
 			return;
 		}
 		if (new Date(child.startime) < new Date()) {
 			send(res, {
 				"msg": "list[" + index + "]已早于当前时间",
-				"style": -1
+				"style":0
 			});
 			return;
 		}
@@ -706,23 +691,10 @@ server.post("/planAdd", async function(req, res) {
 
 })
 
-server.get('/planGet', async function(req, res) {
-	let obj = req.obj.data;
-	let judgeOptions = {
-		time: {
-			length: 1000000
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-	//参数格式正确性
 
+server.post('/planGet', async function(req, res) {
+	let obj = req.obj.data;
+	
 	sqlStringSelect = sql.select(['plan.plan_id', 'plan.room_id', 'room.room_name', 'plan.play_id', 'play.play_name',
 			'play.play_length', 'plan.plan_language', 'plan.plan_startime', 'plan.plan_money'
 		], 'plan,play,room',

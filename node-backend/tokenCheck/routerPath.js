@@ -52,6 +52,9 @@ const router = {
 	"/roomDel": managerConfig,
 	"/roomEdit": managerConfig,
 	
+	"/planAdd":managerConfig,
+	"/planGet":selectConfig,
+	
 	
 	"/reportType/all":Object.assign({},reportConfig,{status:[userStatusTable.comment,userStatusTable.user]}),
 	"/reportType/add":reportConfig,

@@ -3,7 +3,7 @@ const userRule = require("./userRule.js").userRouter;
 const playRule = require("./playRule.js").playRouter;
 const reportTypeRule = require("./reportTypeRule.js").reportTypeRouter;
 const roomRule = require("./roomRule.js").roomRouter;
-
+const planRule = require("./planRule.js").planRouter;
 
 module.exports = {
 	router: Object.assign({},
@@ -11,6 +11,7 @@ module.exports = {
 		userRule,
 		playRule,
 		reportTypeRule,
-		roomRule
+		roomRule,
+		planRule
 	)
 }
