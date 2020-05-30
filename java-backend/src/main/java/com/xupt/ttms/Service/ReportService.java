@@ -29,7 +29,7 @@ public class ReportService {
         List<Report> reports = mapper.selectByExample(example);
 
         int insert=0;
-        if(report==null){
+        if(reports==null){
 
             insert = mapper.insert(report);
             Comment comment = new Comment();

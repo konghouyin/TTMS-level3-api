@@ -41,7 +41,7 @@ public class ReportController {
             uto.setMsg(returnType.SUCCESS.getMsg());
         }else {
             uto.setMsg("该评论已举报");
-            uto.setStyle(9);
+            uto.setStyle(0);
         }
         return uto;
     }
