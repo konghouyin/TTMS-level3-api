@@ -22,6 +22,16 @@ const selectConfig = {
 	status: [userStatusTable.manager,userStatusTable.sale,userStatusTable.user]
 }
 
+const userManagerConfig = {
+	point: userPoint,
+	status: [userStatusTable.userManager]
+}
+
+const userConfig = {
+	point: userPoint,
+	status: [userStatusTable.user]
+}
+
 
 const managerConfig = {
 	point: managerPoint,
@@ -35,10 +45,11 @@ const reportConfig = {
 //配置聚合
 
 const router = {
-	"/userAll": {
-		point: userPoint,
-		status: [userStatusTable.userManager]
-	},
+	"/userAll": userManagerConfig,
+	"/userEdit":userManagerConfig,
+	"/userMain": userManagerConfig,
+	"/userChange":userManagerConfig,
+	
 	"/query": managerConfig,
 	"/playAdd": managerConfig,
 	"/playAll": selectConfig,
