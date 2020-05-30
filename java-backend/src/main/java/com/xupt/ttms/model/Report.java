@@ -1,5 +1,7 @@
 package com.xupt.ttms.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Report {
@@ -10,7 +12,7 @@ public class Report {
     private Integer userId;
 
     private Integer commentId;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date reportTime;
 
     private String reportText;

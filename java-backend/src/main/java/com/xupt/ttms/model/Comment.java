@@ -1,5 +1,7 @@
 package com.xupt.ttms.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Comment {
@@ -10,7 +12,7 @@ public class Comment {
     private Integer userId;
 
     private String commentText;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date commentTime;
 
     private Short commentLevel;//评论分数

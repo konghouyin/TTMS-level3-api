@@ -53,11 +53,11 @@ public class ReportTypeController {
         int i = service.updateReportType(data);
         returnUTO uto = new returnUTO();
         if(i==0){
-            uto.setStyle(returnType.DATABASEERR.getStyle());
-            uto.setMsg(returnType.DATABASEERR.getMsg());
+            uto.setStyle(0);
+            uto.setMsg("未找到指定id");
         }else {
             uto.setStyle(returnType.SUCCESS.getStyle());
-            uto.setMsg(returnType.SUCCESS.getMsg());
+            uto.setMsg("删除"+returnType.SUCCESS.getMsg());
         }
         return uto;
     }
