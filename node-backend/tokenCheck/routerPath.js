@@ -30,11 +30,18 @@ const ticketSelectConfig = {
 }
 //销售数据查询
 
+const userCommentConfig = {
+	point: java,
+	status: [userStatusTable.user]
+}
+//评论举报 / 用户
+
 const userManagerConfig = {
 	point: userPoint,
 	status: [userStatusTable.userManager]
 }
 //用户平台管理
+
 
 const userConfig = {
 	point: userPoint,
@@ -82,12 +89,11 @@ const router = {
 	"/reportType/add":reportConfig,
 	"/reportType/del":reportConfig,
 	
-	"/report/add":{
-		point: java,
-		status: [userStatusTable.user]
-	},
+	"/report/add":userCommentConfig,
 	"/comment/report":reportConfig,
 	"/comment/del":reportConfig,
+	"/comment/reject":reportConfig,
+	"/comment/add":userCommentConfig,
 	
 	"/playNear":ticketSelectConfig,
 	"/planList":ticketSelectConfig,
