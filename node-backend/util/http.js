@@ -1,6 +1,6 @@
 const express = require('express');
 //const request = require("request"); //发送网路请求
-const routerRule = require("./pathRule.js").router;
+const routerRule = require("./pathRule/index.js").router;
 
 const server = express(); //使用express框架
 
@@ -43,6 +43,7 @@ server.get('*', function(req, res, next) {
 
 server.all('*', function(req, res, next) {
 	let data = req.obj;
+	console.log(data)
 	let check = judge(routerRule[req._parsedUrl.pathname],data);
 	if(check.style === 1){
 		next();

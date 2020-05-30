@@ -296,36 +296,6 @@ server.post("/playEdit", async function(req, res) {
 
 server.post("/roomAdd", async function(req, res) {
 	let obj = req.obj.data;
-	let judgeOptions = {
-		name: {
-			length: 64
-		},
-		row: {
-			type: "int",
-			length: 32
-		},
-		col: {
-			type: "int",
-			length: 32
-		},
-		seat: {
-			type: "Array",
-			length: 1000000
-		},
-		status: {
-			type: 'only',
-			main: ["0", "1"],
-			length: 10
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
 	let connect = await sql.handler(pool);
 	let sqlStringRoom = sql.insert('room', ['room_name', 'room_row', 'room_col', 'room_status'],
 		[sql.escape(obj.name), sql.escape(obj.row), sql.escape(obj.col), sql.escape(obj.status)]);
@@ -357,7 +327,7 @@ server.post("/roomAdd", async function(req, res) {
 //添加演出厅
 
 
-server.get("/roomAll", async function(req, res) {
+server.post("/roomAll", async function(req, res) {
 	let sqlString = sql.select(['room_id', 'room_name', 'room_row', 'room_col', 'room_status'], 'room',
 			'room_status<>-1') +
 		' ORDER BY room_id';
@@ -379,22 +349,8 @@ server.get("/roomAll", async function(req, res) {
 //查询全部演出厅
 
 
-server.get("/roomMain", async function(req, res) {
+server.post("/roomMain", async function(req, res) {
 	let obj = req.obj.data;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
 	let sqlStringSelect = sql.select(['room_id'], 'room', 'room_status<>-1 and room_id=' + sql.escape(obj.id));
 	try {
 		var selectAns = await sql.sever(pool, sqlStringSelect);
@@ -443,20 +399,6 @@ server.get("/roomMain", async function(req, res) {
 
 server.post("/roomDel", async function(req, res) {
 	let obj = req.obj.data;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
 	let sqlStringSelect = sql.select(['room_id'], 'room', 'room_status<>-1 and room_id=' + sql.escape(obj.id));
 	try {
 		var selectAns = await sql.sever(pool, sqlStringSelect);
@@ -526,59 +468,6 @@ server.post("/roomDel", async function(req, res) {
 
 server.post("/roomEdit", async function(req, res) {
 	let obj = req.obj.data;
-	let judgeOptions = {
-		name: {
-			length: 64
-		},
-		status: {
-			type: 'only',
-			main: ["0", "1"],
-			length: 10
-		},
-		id: {
-			type: 'int',
-			length: 10
-		},
-		change: {
-			type: 'only',
-			main: ["0", "1"],
-			length: 10
-		},
-		//该字段表示是否修改过座位表
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-	if (obj.change == 1) {
-		let seatOption = {
-			seat: {
-				type: "Array",
-				length: 1000000
-			},
-			row: {
-				type: "int",
-				length: 32
-			},
-			col: {
-				type: "int",
-				length: 32
-			}
-		}
-		let judgeCtrl = judge(seatOption, obj);
-		if (judgeCtrl.style == 0) {
-			send(res, {
-				"msg": judgeCtrl.message,
-				"style": -1
-			})
-			return;
-		}
-	}
-
 	let sqlStringSelect = sql.select(['room_id'], 'room', 'room_status<>-1 and room_id=' + sql.escape(obj.id));
 	try {
 		var selectAns = await sql.sever(pool, sqlStringSelect);
@@ -660,6 +549,8 @@ server.post("/roomEdit", async function(req, res) {
 	});
 })
 //编辑剧目
+
+
 
 server.post("/planAdd", async function(req, res) {
 	let obj = req.obj.data;

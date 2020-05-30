@@ -130,7 +130,7 @@ serverApi.all('*', async function(req, res) {
 				})
 			} else {
 				let back = JSON.parse(body)
-				if (back.style === 1) {
+				if (back.style === 1 || back.style === 0 || back.style === -2) {
 					send(res, back)
 				} else {
 					console.log(body)

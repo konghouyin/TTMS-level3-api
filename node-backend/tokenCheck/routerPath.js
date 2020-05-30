@@ -14,8 +14,13 @@ userStatusTable = {
 	comment: 7, 	//评论管理
 	push: 8, 		//推送系统
 	wx: 9 			//微信小程序
-}
+} 
 //权限配置
+
+const selectConfig = {
+	point: managerPoint,
+	status: [userStatusTable.manager,userStatusTable.sale,userStatusTable.user]
+}
 
 
 const managerConfig = {
@@ -36,12 +41,19 @@ const router = {
 	},
 	"/query": managerConfig,
 	"/playAdd": managerConfig,
-	"/playAll": managerConfig,
-	"/playMain": managerConfig,
+	"/playAll": selectConfig,
+	"/playMain": selectConfig,
 	"/playDel": managerConfig,
 	"/playEdit": managerConfig,
 	
-	"/reportType/all":reportConfig,
+	"/roomAdd": managerConfig,
+	"/roomAll":selectConfig,
+	"/roomMain":selectConfig,
+	"/roomDel": managerConfig,
+	"/roomEdit": managerConfig,
+	
+	
+	"/reportType/all":Object.assign({},reportConfig,{status:[userStatusTable.comment,userStatusTable.user]}),
 	"/reportType/add":reportConfig,
 	"/reportType/del":reportConfig,
 	

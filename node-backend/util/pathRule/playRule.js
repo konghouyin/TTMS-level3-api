@@ -1,17 +1,3 @@
-const accountRule = {
-	name: {
-		type: "string",
-		max: 32
-	},
-	password: {
-		type: "string",
-		max: 32
-	}
-}
-
-const empty = {}
-
-
 const queryRule = {
 	url: {
 		type: "string",
@@ -69,37 +55,22 @@ const playAddRule = {
 
 const playMainRule = {
 	id: {
-		type: "int",
-		max: 32
+		type: "int"
 	}
 }
 
-const reportTypeRule = {
-	reporttypeName:{
-		type: "string",
-		max: 15
-	}
-}
+const empty = {}
 
 
-const router = {
-	"/TTMS-v3/account/reg": accountRule,
-	"/TTMS-v3/account/login": accountRule,
-	
-	"/TTMS-v3/api/userAll": empty,
-	
+const playRouter = {
 	"/TTMS-v3/api/query": queryRule,
 	"/TTMS-v3/api/playAdd": playAddRule,
 	"/TTMS-v3/api/playAll": empty,
 	"/TTMS-v3/api/playMain": playMainRule,
 	"/TTMS-v3/api/playDel": playMainRule,
-	"/TTMS-v3/api/playEdit": Object.assign({},playAddRule,playMainRule),
-	
-	"/TTMS-v3/api/reportType/all":empty,
-	"/TTMS-v3/api/reportType/add":reportTypeRule,
-	"/TTMS-v3/api/reportType/del":reportTypeRule
+	"/TTMS-v3/api/playEdit": Object.assign({}, playAddRule, playMainRule),
 }
 
 module.exports = {
-	router
+	playRouter
 }
