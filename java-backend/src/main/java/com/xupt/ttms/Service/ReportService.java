@@ -25,7 +25,7 @@ public class ReportService {
         ReportExample example = new ReportExample();
         example.createCriteria().andCommentIdEqualTo(report.getCommentId())
                 .andReporttypeIdEqualTo(report.getReporttypeId())
-                .andReportStatusEqualTo((short) ReportEnum.WELL.getStatus());
+                .andReportStatusNotEqualTo((short) ReportEnum.WELL.getStatus());
         List<Report> reports = mapper.selectByExample(example);
 
         int insert=0;
