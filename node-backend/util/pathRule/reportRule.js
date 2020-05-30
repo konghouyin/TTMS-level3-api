@@ -1,23 +1,28 @@
-const idRule = {
-	id: {
+
+const reportAddRule = {
+	commentId: {
 		type: "int",
+	},
+	reporttypeId: {
+		type: "int",
+	},
+	reportText: {
+		type: "string",
 	}
 }
 
-const reportAddRule = {
-	id: {
+const reportDelRule = {
+	commentId: {
 		type: "int",
-	},
-	ticket: {
-		type: "Array",
 	}
 }
 
 const empty = {}
 
 const reportRouter = {
-	"/TTMS-v3/api/report/add": empty,
-	
+	"/TTMS-v3/api/report/add": reportAddRule,
+	"/TTMS-v3/api/comment/report":empty,
+	"/TTMS-v3/api/comment/del":reportDelRule
 }
 
 module.exports = {

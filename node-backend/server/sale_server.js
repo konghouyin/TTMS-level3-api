@@ -147,6 +147,7 @@ server.get('/ticketList', async function(req, res) {
 
 server.post('/order', async function(req, res) {
 	let obj = req.obj.data;
+	let info = req.obj.userInfo;
 	let ticketArr = [];
 	for (let index = 0; index < obj.ticket.length; index++) {
 		let child = obj.ticket[index];
@@ -154,7 +155,7 @@ server.post('/order', async function(req, res) {
 		if (isNaN(int)) {
 			send(res, {
 				"msg": "数组第" + index + "元素不是Int类型",
-				"style": -1
+				"style": 0
 			})
 			return;
 		}
@@ -203,7 +204,7 @@ server.post('/order', async function(req, res) {
 		let sqlString = sql.insert('orderticket', ['user_id', 'orderticket_money', 'orderticket_history',
 				'orderticket_time', 'orderticket_status'
 			],
-			[sql.escape(obj.id), Number.parseFloat(money[0].plan_money) * ticketArr.length, sql.escape(JSON.stringify(
+			[info.user_id, Number.parseFloat(money[0].plan_money) * ticketArr.length, sql.escape(JSON.stringify(
 				ticketArr)), 'NOW()', '0']);
 		var orderId = await sql.stepsql(connect, sqlString);
 

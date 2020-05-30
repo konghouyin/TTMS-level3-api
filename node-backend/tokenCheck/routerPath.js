@@ -86,11 +86,14 @@ const router = {
 		point: java,
 		status: [userStatusTable.user]
 	},
+	"/comment/report":reportConfig,
+	"/comment/del":reportConfig,
 	
 	"/playNear":ticketSelectConfig,
 	"/planList":ticketSelectConfig,
 	"/ticketList":ticketSelectConfig,
 	"/order":ticketSelectConfig,
+	"/selectOrder":ticketSelectConfig
 	
 	
 }
