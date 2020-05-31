@@ -433,22 +433,7 @@ server.post('/saleOrder', async function(req, res) {
 
 
 server.post('/cancelOrder', async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-
+	let obj = req.obj.data;
 
 	let sqlString = sql.select(['orderticket_id'], 'orderticket',
 		'orderticket_status=0 and orderticket_id=' + sql.escape(obj.id));
@@ -468,7 +453,7 @@ server.post('/cancelOrder', async function(req, res) {
 		});
 		return;
 	}
-	//删除驳回
+	//取消驳回
 
 
 	let connect = await sql.handler(pool);
@@ -511,22 +496,12 @@ server.post('/cancelOrder', async function(req, res) {
 //订单取消
 
 
-server.get('/ticketMessage', async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
+
+
+
+
+server.post('/ticketMessage', async function(req, res) {
+	let obj = req.obj.data;
 
 	let sqlString = sql.select(['ticket_id'], 'ticket', 'ticket_id=' + sql.escape(obj.id));
 	try {
@@ -550,7 +525,7 @@ server.get('/ticketMessage', async function(req, res) {
 			'plan.plan_startime', 'plan.plan_language', 'plan.plan_money'
 		],
 		'play,plan,room,seat,ticket',
-		'ticket.plan_id=plan.plan_id and ticket.seat_id=seat.seat_id and seat.room_id=room.room_id and ticket.ticket_id=' +
+		'ticket.plan_id=plan.plan_id and ticket.seat_id=seat.seat_id and plan.play_id=play.play_id and seat.room_id=room.room_id and ticket.ticket_id=' +
 		sql.escape(obj.id));
 	try {
 		selectAns = await sql.sever(pool, 'SELECT distinct ' + sqlString.split('SELECT')[1]);
@@ -569,3 +544,66 @@ server.get('/ticketMessage', async function(req, res) {
 
 })
 //根据ticket_id查询票的详细信息
+
+
+
+
+server.post('/cancelSale', async function(req, res) {
+	let obj = req.obj.data;
+	let info = req.obj.userInfo;
+	let sqlString = sql.select(['ticket_id'], 'ticket,plan',
+		'(ticket.ticket_status=1 or ticket.ticket_status=3) and NOW()<plan.plan_startime and ticket.plan_id=plan.plan_id and ticket.ticket_id=' +
+		sql.escape(obj.id));
+	try {
+		var selectAns = await sql.sever(pool, sqlString);
+	} catch (err) {
+		send(res, {
+			"msg": err,
+			"style": -2
+		});
+		return;
+	}
+	if (selectAns.length != 1) {
+		send(res, {
+			"msg": "不满足退票规则",
+			"style": 0
+		});
+		return;
+	}
+	//支付驳回
+
+	let connect = await sql.handler(pool);
+	try {
+		let sqlString = sql.update('ticket', ['ticket_status'], ['0'], 'ticket_id=' + sql.escape(obj.id));
+		await sql.stepsql(connect, sqlString);
+		//更新票状态--->未卖出
+
+		sqlString = sql.select(['plan.plan_money'], 'ticket,plan', 'ticket.plan_id=plan.plan_id and ticket_id=' +
+			sql.escape(obj.id));
+		selectAns = await sql.stepsql(connect, sqlString);
+		//查询票价
+		let money = selectAns[0].plan_money;
+
+		sqlString = sql.insert('sale', ['user_id', 'ticket_id', 'sale_money', 'sale_status', 'sale_time'],
+			[info.user_id, sql.escape(obj.id), sql.escape(money), '0', 'NOW()']);
+		await sql.stepsql(connect, sqlString);
+		//生成退票销售单
+
+		await connect.commit()
+	} catch (err) {
+		await connect.rollback()
+		send(res, {
+			"msg": err,
+			"style": -2
+		});
+		return;
+	} finally {
+		connect.release()
+	}
+
+	send(res, {
+		"msg": "退票成功！",
+		"style": 1
+	});
+})
+//退票

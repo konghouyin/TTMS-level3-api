@@ -102,7 +102,9 @@ const router = {
 	"/selectOrder":ticketSelectConfig,
 	"/selectAllOrder":ticketSelectConfig,
 	"/saleOrder":ticketSelectConfig,
-	
+	"/cancelOrder":ticketSelectConfig,
+	"/ticketMessage":ticketSelectConfig,
+	"/cancelSale":ticketSelectConfig,
 	
 }
 

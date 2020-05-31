@@ -20,6 +20,9 @@ const saleRouter = {
 	"/TTMS-v3/api/selectOrder":idRule,
 	"/TTMS-v3/api/selectAllOrder": empty,
 	"/TTMS-v3/api/saleOrder": idRule,
+	"/TTMS-v3/api/cancelOrder": idRule,
+	"/TTMS-v3/api/ticketMessage": idRule,
+	"/TTMS-v3/api/cancelSale": idRule,
 }
 
 module.exports = {
