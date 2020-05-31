@@ -351,9 +351,10 @@ server.post("/roomAll", async function(req, res) {
 
 server.post("/roomMain", async function(req, res) {
 	let obj = req.obj.data;
-	let sqlStringSelect = sql.select(['room_id'], 'room', 'room_status<>-1 and room_id=' + sql.escape(obj.id));
+	let sqlStringSelect = sql.select(['room_id', 'room_name', 'room_row', 'room_col', 'room_status'],
+	 'room', 'room_status<>-1 and room_id=' + sql.escape(obj.id));
 	try {
-		var selectAns = await sql.sever(pool, sqlStringSelect);
+		var selectAnsBase = await sql.sever(pool, sqlStringSelect);
 	} catch (err) {
 		send(res, {
 			"msg": err,
@@ -361,7 +362,7 @@ server.post("/roomMain", async function(req, res) {
 		});
 		return;
 	}
-	if (selectAns.length != 1) {
+	if (selectAnsBase.length != 1) {
 		send(res, {
 			"msg": "没有查询到要该id对应的演出厅",
 			"style": 0
@@ -389,7 +390,8 @@ server.post("/roomMain", async function(req, res) {
 	} else {
 		send(res, {
 			"msg": "查询成功！",
-			"data": selectAns,
+			"seatList": selectAns,
+			"roomBase":selectAnsBase[0],
 			"style": 1
 		});
 	}

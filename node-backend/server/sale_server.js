@@ -1,4 +1,3 @@
-
 const express = require('express');
 const request = require('request');
 const sql = require('../util/sql.js');
@@ -45,7 +44,7 @@ server.post('/playNear', async function(req, res) {
 
 server.post('/planList', async function(req, res) {
 	let obj = req.obj.data;
-	
+
 	let sqlString = sql.select(['play_id'], 'play', 'play_id=' + sql.escape(obj.id));
 	try {
 		var selectAns = await sql.sever(pool, sqlString);
@@ -122,7 +121,8 @@ server.get('/ticketList', async function(req, res) {
 
 
 	sqlString = sql.select(['ticket_id', 'seat_id'], 'ticket', 'plan_id=' + sql.escape(obj.id) +
-		' and (ticket_status=1 or (ticket_status=2 and ticket_time > date_sub(NOW(),interval 10 minute) or ticket_status=3))');
+		' and (ticket_status=1 or (ticket_status=2 and ticket_time > date_sub(NOW(),interval 10 minute) or ticket_status=3))'
+	);
 	//查询已卖出的票
 	try {
 		var selectAnsSale = await sql.sever(pool, sqlString);
@@ -229,23 +229,8 @@ server.post('/order', async function(req, res) {
 //订票
 
 
-server.get('/selectOrder', async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-
+server.post('/selectOrder', async function(req, res) {
+	let obj = req.obj.data;
 
 	let arr = []; //购票数组
 	let sqlString = sql.select(['orderticket_money', 'orderticket_history', 'orderticket_time', 'orderticket_status'],
@@ -264,7 +249,8 @@ server.get('/selectOrder', async function(req, res) {
 
 
 	sqlString = sql.select(['room.room_name', 'play.play_name', 'play.play_pic', 'plan.plan_startime',
-			'plan.plan_language', 'plan.plan_money'	],'play,plan,room,ticket,seat',
+			'plan.plan_language', 'plan.plan_money'
+		], 'play,plan,room,ticket,seat',
 		'ticket.plan_id=plan.plan_id and ticket.seat_id=seat.seat_id and plan.play_id=play.play_id and plan.room_id=room.room_id and ticket.ticket_id=' +
 		sql.escape(num[0]));
 	try {
@@ -303,31 +289,18 @@ server.get('/selectOrder', async function(req, res) {
 	});
 
 })
-//查询订单
+//查询订单详情
 
 
-server.get('/selectAllOrder', async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-
+server.post('/selectAllOrder', async function(req, res) {
+	let info = req.obj.userInfo;
 	let arr = []; //保存所有信息
 	let sqlString = sql.select(['orderticket_id', 'orderticket_money', 'orderticket_history', 'orderticket_time',
-			'orderticket_status'],'orderticket', 'user_id=' + sql.escape(obj.id));
+		'orderticket_status'
+	], 'orderticket', 'user_id=' + info.user_id);
 	try {
-		selectBase = await sql.sever(pool, 'SELECT distinct ' + sqlString.split('SELECT')[1]+" ORDER BY orderticket_id DESC");
+		selectBase = await sql.sever(pool, 'SELECT distinct ' + sqlString.split('SELECT')[1] +
+			" ORDER BY orderticket_id DESC");
 	} catch (err) {
 		send(res, {
 			"msg": err,
@@ -342,7 +315,8 @@ server.get('/selectAllOrder', async function(req, res) {
 		let num = JSON.parse(selectBase[i].orderticket_history);
 		//查询订单基础信息
 		sqlString = sql.select(['room.room_name', 'play.play_name', 'play.play_pic', 'plan.plan_startime',
-				'plan.plan_language', 'plan.plan_money'],'play,plan,room,ticket,seat',
+				'plan.plan_language', 'plan.plan_money'
+			], 'play,plan,room,ticket,seat',
 			'ticket.plan_id=plan.plan_id and ticket.seat_id=seat.seat_id and plan.play_id=play.play_id and plan.room_id=room.room_id and ticket.ticket_id=' +
 			sql.escape(num[0]));
 		try {
@@ -355,8 +329,8 @@ server.get('/selectAllOrder', async function(req, res) {
 			return;
 		}
 		//查询剧目信息
-		arr[i].play=selectPlay[0];
-		
+		arr[i].play = selectPlay[0];
+
 		ticketStr = 'ticket_id=' + num.join(' or ticket_id=');
 		sqlString = sql.select(['seat.seat_row', 'seat.seat_col'],
 			'seat,ticket', 'ticket.seat_id=seat.seat_id  and (' + ticketStr + ')');
@@ -370,7 +344,7 @@ server.get('/selectAllOrder', async function(req, res) {
 			return;
 		}
 		//查询影票信息
-		arr[i].ticket=selectTicket;
+		arr[i].ticket = selectTicket;
 	}
 	send(res, {
 		"msg": "查询成功！",
@@ -382,29 +356,9 @@ server.get('/selectAllOrder', async function(req, res) {
 //查询我的所有订单
 
 
-
 server.post('/saleOrder', async function(req, res) {
-	let obj = req.obj;
-	let judgeOptions = {
-		id: {
-			type: "int",
-			length: 32
-		},
-		userId: {
-			type: "int",
-			length: 32
-		}
-	}
-	let judgeCtrl = judge(judgeOptions, obj);
-	if (judgeCtrl.style == 0) {
-		send(res, {
-			"msg": judgeCtrl.message,
-			"style": -1
-		})
-		return;
-	}
-
-
+	let obj = req.obj.data;
+	let info = req.obj.userInfo;
 	let sqlString = sql.select(['orderticket_id'], 'orderticket',
 		'orderticket_status=0 and NOW()<date_add(orderticket_time, interval 10 minute) and orderticket_id=' + sql.escape(
 			obj.id));
@@ -424,8 +378,7 @@ server.post('/saleOrder', async function(req, res) {
 		});
 		return;
 	}
-	//删除驳回
-
+	//支付驳回
 
 	let connect = await sql.handler(pool);
 	try {
@@ -452,7 +405,7 @@ server.post('/saleOrder', async function(req, res) {
 			await sql.stepsql(connect, sqlString);
 
 			sqlString = sql.insert('sale', ['user_id', 'ticket_id', 'sale_money', 'sale_status', 'sale_time'],
-				[sql.escape(obj.userId), sql.escape(arr[i]), sql.escape(money), '1', 'NOW()']);
+				[info.user_id, sql.escape(arr[i]), sql.escape(money), '1', 'NOW()']);
 			await sql.stepsql(connect, sqlString);
 		}
 		//生成销售单
@@ -473,8 +426,6 @@ server.post('/saleOrder', async function(req, res) {
 		"msg": "购票成功！",
 		"style": 1
 	});
-
-
 })
 //支付订单
 
@@ -534,7 +485,8 @@ server.post('/cancelOrder', async function(req, res) {
 
 
 		for (let i = 0; i < arr.length; i++) {
-			let sqlString = sql.update('ticket', ['ticket_status'], ['0'], 'ticket_status=2 and ticket_id=' + sql.escape(arr[i]));
+			let sqlString = sql.update('ticket', ['ticket_status'], ['0'], 'ticket_status=2 and ticket_id=' + sql.escape(arr[
+				i]));
 			await sql.stepsql(connect, sqlString);
 		}
 		//恢复票状态
@@ -555,8 +507,6 @@ server.post('/cancelOrder', async function(req, res) {
 		"msg": "订单取消成功！",
 		"style": 1
 	});
-
-
 })
 //订单取消
 
