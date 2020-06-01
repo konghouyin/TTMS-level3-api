@@ -20,6 +20,8 @@ public class UploadController {
 
 
     private String UPLOAD_FOLDER="/root/ttms-v3/fileUpload/";
+    //private String UPLOAD_FOLDER="C:\\Users\\加雷斯 贝尔\\Desktop\\";
+
 
     @PostMapping("/singlefile")
     public Object singleFileUpload(MultipartFile file) {
@@ -32,7 +34,8 @@ public class UploadController {
 
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOAD_FOLDER + file.getOriginalFilename());
+            long l = System.currentTimeMillis();
+            Path path = Paths.get(UPLOAD_FOLDER + file.getOriginalFilename()+l);
             //如果没有files文件夹，则创建
             if (!Files.isWritable(path)) {
                 Files.createDirectories(Paths.get(UPLOAD_FOLDER));
