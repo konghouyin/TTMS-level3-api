@@ -19,7 +19,7 @@ import java.util.Objects;
 public class UploadController {
 
 
-    private String UPLOAD_FOLDER="/ttms-v3/fileUpload/";
+    private String UPLOAD_FOLDER="/root/ttms-v3/fileUpload/";
 
     @PostMapping("/singlefile")
     public Object singleFileUpload(MultipartFile file) {
