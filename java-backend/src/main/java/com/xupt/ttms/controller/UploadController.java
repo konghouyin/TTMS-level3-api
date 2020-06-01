@@ -39,7 +39,7 @@ public class UploadController {
             }
             //文件写入指定路径
             Files.write(path, bytes);
-            uto.setMsg("http://132.232.169.227/"+path.toString());
+            uto.setMsg("http://132.232.169.227"+path.toString());
             uto.setStyle(1);
         } catch (IOException e) {
             e.printStackTrace();
