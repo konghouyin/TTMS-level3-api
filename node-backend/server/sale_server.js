@@ -266,7 +266,7 @@ server.post('/selectOrder', async function(req, res) {
 
 
 	ticketStr = 'ticket_id=' + num.join(' or ticket_id=');
-	sqlString = sql.select(['seat.seat_row', 'seat.seat_col'],
+	sqlString = sql.select(['seat.seat_row', 'seat.seat_col','ticket.ticket_status','ticket.ticket_id'],
 		'seat,ticket', 'ticket.seat_id=seat.seat_id  and (' + ticketStr + ')');
 	try {
 		selectTicket = await sql.sever(pool, sqlString);
@@ -332,7 +332,7 @@ server.post('/selectAllOrder', async function(req, res) {
 		arr[i].play = selectPlay[0];
 
 		ticketStr = 'ticket_id=' + num.join(' or ticket_id=');
-		sqlString = sql.select(['seat.seat_row', 'seat.seat_col'],
+		sqlString = sql.select(['seat.seat_row', 'seat.seat_col','ticket.ticket_status','ticket.ticket_id'],
 			'seat,ticket', 'ticket.seat_id=seat.seat_id  and (' + ticketStr + ')');
 		try {
 			selectTicket = await sql.sever(pool, sqlString);
