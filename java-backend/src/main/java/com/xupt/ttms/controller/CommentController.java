@@ -72,9 +72,18 @@ public class CommentController {
         if(i==0){
             uto.setStyle(returnType.DATABASEERR.getStyle());
             uto.setMsg(returnType.DATABASEERR.getMsg());
-        }else {
+        }else if(i==1){
             uto.setStyle(returnType.SUCCESS.getStyle());
             uto.setMsg(returnType.SUCCESS.getMsg());
+        }else if(i==2){
+            uto.setMsg("该评论已被覆盖");
+            uto.setStyle(1);
+        }else if(i==-3){
+            uto.setMsg("您关于该电影的评论已被举报");
+            uto.setStyle(0);
+        }else {
+            uto.setMsg("查无此电影，id无效");
+            uto.setStyle(0);
         }
 
 
@@ -112,15 +121,20 @@ public class CommentController {
         TransDTO dto = mapper.readValue(json, TransDTO.class);
 
         Comment comment = mapper.convertValue(dto.getData(), Comment.class);
-        boolean b = service.delComment(comment);
+        int b = service.delComment(comment);
 
         returnUTO uto = new returnUTO();
-        if(!b){
-           uto.setMsg("数据库异常");
-           uto.setStyle(-2);
+        if(b==-1){
+            uto.setMsg("数据库异常");
+            uto.setStyle(-2);
+        }else if(b==0){
+            uto.setMsg("删除成功");
+            uto.setStyle(1);
+        }else {
+            uto.setMsg("评论已进行相关操作，无法删除");
+            uto.setStyle(0);
         }
-        uto.setMsg("删除成功");
-        uto.setStyle(1);
+
         return uto;
     }
 
@@ -131,15 +145,20 @@ public class CommentController {
         TransDTO dto = mapper.readValue(json,TransDTO.class);
 
         Comment comment = mapper.convertValue(dto.getData(),Comment.class);
-        boolean b = service.rejectComment(comment);
+        int b = service.rejectComment(comment);
 
         returnUTO uto = new returnUTO();
-        if(!b){
+        if(b==-1){
             uto.setMsg("数据库异常");
             uto.setStyle(-2);
+        }else if(b==0){
+            uto.setMsg("驳回成功");
+            uto.setStyle(1);
+        }else {
+            uto.setMsg("评论已删除");
+            uto.setStyle(0);
         }
-        uto.setMsg("驳回成功");
-        uto.setStyle(1);
+
         return uto;
     }
 

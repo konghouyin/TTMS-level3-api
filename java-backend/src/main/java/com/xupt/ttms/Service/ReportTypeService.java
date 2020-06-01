@@ -1,6 +1,7 @@
 package com.xupt.ttms.Service;
 
 import com.xupt.ttms.mapper.ReportTypeMapper;
+import com.xupt.ttms.model.Report;
 import com.xupt.ttms.model.ReportType;
 import com.xupt.ttms.model.ReportTypeEnum;
 import com.xupt.ttms.model.ReportTypeExample;
@@ -16,6 +17,21 @@ public class ReportTypeService {
     ReportTypeMapper reportTypeMapper;
 
     public int reportTypeAdd(ReportType type){
+        ReportTypeExample example = new ReportTypeExample();
+        example.createCriteria().andReporttypeNameEqualTo(type.getReporttypeName());
+        ReportType select = reportTypeMapper.selectByExample(example).get(0);
+        if(select!=null && select.getReporttypeStatus()==2){
+            ReportType type1 = new ReportType();
+            type1.setReporttypeStatus((short) ReportTypeEnum.WELL.getType());
+
+            ReportTypeExample example1 = new ReportTypeExample();
+            example1.createCriteria().andReporttypeNameEqualTo(type.getReporttypeName());
+            reportTypeMapper.updateByExampleSelective(type1,example1);
+
+            return 2;
+        }else if (select.getReporttypeStatus()==1){
+            return 3;
+        }
         int insert = reportTypeMapper.insert(type);
         if(0 == insert){
             return 0;

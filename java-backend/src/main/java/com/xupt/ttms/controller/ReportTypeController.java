@@ -36,9 +36,15 @@ public class ReportTypeController {
         if(i==0){
             uto.setStyle(returnType.DATABASEERR.getStyle());
             uto.setMsg(returnType.DATABASEERR.getMsg());
-        }else {
+        }else if(i==1){
             uto.setStyle(returnType.SUCCESS.getStyle());
             uto.setMsg(returnType.SUCCESS.getMsg());
+        }else if (i==2){
+            uto.setMsg("覆盖成功");
+            uto.setStyle(1);
+        }else{
+            uto.setMsg("已添加过");
+            uto.setStyle(0);
         }
 
 

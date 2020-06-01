@@ -24,6 +24,7 @@ public class ReportService {
 
         ReportExample example = new ReportExample();
         example.createCriteria().andCommentIdEqualTo(report.getCommentId())
+                .andUserIdEqualTo(report.getUserId())
                 .andReporttypeIdEqualTo(report.getReporttypeId())
                 .andReportStatusNotEqualTo((short) ReportEnum.WELL.getStatus());
         List<Report> reports = mapper.selectByExample(example);
