@@ -35,14 +35,16 @@ public class UploadController {
         try {
             byte[] bytes = file.getBytes();
             long l = System.currentTimeMillis();
-            Path path = Paths.get(UPLOAD_FOLDER + file.getOriginalFilename()+l);
+
+            String fileName = l+file.getOriginalFilename();
+            Path path = Paths.get(UPLOAD_FOLDER + fileName);
             //如果没有files文件夹，则创建
             if (!Files.isWritable(path)) {
                 Files.createDirectories(Paths.get(UPLOAD_FOLDER));
             }
             //文件写入指定路径
             Files.write(path, bytes);
-            uto.setMsg("http://132.232.169.227"+path.toString());
+            uto.setMsg("http://132.232.169.227/ttms-v3/fileUpload/"+fileName);
             uto.setStyle(1);
         } catch (IOException e) {
             e.printStackTrace();
