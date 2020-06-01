@@ -75,6 +75,7 @@ const router = {
 	"/playMain": selectConfig,
 	"/playDel": managerConfig,
 	"/playEdit": managerConfig,
+	"/upload/singlefile":managerConfig,
 	
 	"/roomAdd": managerConfig,
 	"/roomAll":selectConfig,

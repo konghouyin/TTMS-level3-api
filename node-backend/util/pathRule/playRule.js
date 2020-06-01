@@ -69,6 +69,7 @@ const playRouter = {
 	"/TTMS-v3/api/playMain": playMainRule,
 	"/TTMS-v3/api/playDel": playMainRule,
 	"/TTMS-v3/api/playEdit": Object.assign({}, playAddRule, playMainRule),
+	"/TTMS-v3/api/upload/singlefile": empty
 }
 
 module.exports = {
