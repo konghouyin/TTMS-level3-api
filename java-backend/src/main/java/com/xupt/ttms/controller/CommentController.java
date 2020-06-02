@@ -8,6 +8,7 @@ import com.xupt.ttms.dto.returnDTO;
 import com.xupt.ttms.dto.returnUTO;
 import com.xupt.ttms.enums.CommentEnum;
 import com.xupt.ttms.enums.returnType;
+import com.xupt.ttms.mapper.PlayMapper;
 import com.xupt.ttms.model.Comment;
 import com.xupt.ttms.model.Play;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.util.List;
 public class CommentController {
     @Autowired
     CommentService service;
+    @Autowired
+    PlayMapper playMapper;
 
     @PostMapping("/get")
     public Object getByPlay(@RequestBody String json) throws JsonProcessingException {
@@ -32,12 +35,19 @@ public class CommentController {
 
         Integer data = mapper.convertValue(transDTO.getData(), Play.class).getPlayId();
         //System.out.println(data);
+        Play play = playMapper.selectByPrimaryKey(data);
+        returnUTO uto = new returnUTO();
+        if(play==null || play.getPlayStatus().equals("-1")){
+            uto.setMsg("无此影片");
+            uto.setStyle(0);
 
+            return uto;
+        }
         List all;
         try {
            all = service.getByPlay(data);
         }catch (Exception e){
-            returnUTO uto = new returnUTO();
+
             uto.setStyle(returnType.DATABASEERR.getStyle());
             uto.setMsg(returnType.DATABASEERR.getMsg());
 

@@ -36,6 +36,10 @@ public class CommentService {
 
         List<Comment> comments = mapper.selectByExample(example);
         for (Comment comment:comments){
+            Play play = playMapper.selectByPrimaryKey(playId);
+            if(play.getPlayStatus().equals("-1")){
+                break;
+            }
             User user = userMapper.selectByPrimaryKey(comment.getUserId());
 
             CommentDTO dto = new CommentDTO();
@@ -110,7 +114,9 @@ public class CommentService {
             Comment comment = mapper.selectByPrimaryKey(report.getCommentId());
             User user = userMapper.selectByPrimaryKey(report.getUserId());
             Play play = playMapper.selectByPrimaryKey(comment.getPlayId());
-
+            if(play.getPlayStatus().equals("-1")){
+                continue;
+            }
             CommentDTO commentDTO = new CommentDTO();
             commentDTO.setComment(comment);
             commentDTO.setPlay(play);

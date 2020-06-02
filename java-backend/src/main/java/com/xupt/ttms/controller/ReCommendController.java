@@ -9,7 +9,6 @@ import com.xupt.ttms.dto.returnDTO;
 import com.xupt.ttms.dto.returnUTO;
 import com.xupt.ttms.model.Play;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

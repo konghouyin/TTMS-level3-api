@@ -27,15 +27,15 @@ public class Play {
 
     private String playMessage;
 
-    private short playRecommend;
-
-    public short getPlayRecommend() {
+    public String getPlayRecommend() {
         return playRecommend;
     }
 
-    public void setPlayRecommend(short playRecommend) {
+    public void setPlayRecommend(String playRecommend) {
         this.playRecommend = playRecommend;
     }
+
+    private String playRecommend;
 
     public Integer getPlayId() {
         return playId;

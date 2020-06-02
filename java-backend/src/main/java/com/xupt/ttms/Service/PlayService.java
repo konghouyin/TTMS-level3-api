@@ -19,7 +19,9 @@ public class PlayService {
 
     public List<Play> getRecommend(){
         PlayExample example = new PlayExample();
-        example.createCriteria().andPlayRecommendIsNotNull();
+        example.createCriteria().andPlayRecommendIsNotNull()
+                .andPlayRecommendNotEqualTo("")
+                .andPlayStatusNotEqualTo("-1");
 
         List<Play> plays = mapper.selectByExample(example);
         return plays;
@@ -28,7 +30,10 @@ public class PlayService {
 
     public List<Play> getlink(){
         PlayExample example = new PlayExample();
-        example.createCriteria().andPlayLinkNotEqualTo("");
+        example.createCriteria()
+                .andPlayStatusNotEqualTo("-1")
+                .andPlayLinkNotEqualTo("")
+                .andPlayStatusIsNotNull();
 
         List<Play> plays = mapper.selectByExample(example);
         return plays;
@@ -47,8 +52,8 @@ public class PlayService {
         Play play = new Play();
         try{
             if(data.getType()== PlayEnum.RECOMM.getType()){
-                short a = 1;
-                play.setPlayRecommend(a);
+                //short a = 1;
+                play.setPlayRecommend(data.getMsg());
                 mapper.updateByExampleSelective(play,example);
             }else {
                 play.setPlayLink(data.getMsg());

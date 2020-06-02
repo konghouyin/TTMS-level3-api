@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, user_signal, user_status, user_password, user_name, user_age, user_hobby, 
+    user_id, user_signal, user_status, user_password, user_name, user_age, user_hobby,
     user_sex, user_tel, user_time
   </sql>
   <select id="selectByExample" parameterType="com.xupt.ttms.model.UserExample" resultMap="BaseResultMap">
@@ -90,7 +90,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where user_id = #{userId,jdbcType=INTEGER}
@@ -106,13 +106,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xupt.ttms.model.User">
-    insert into user (user_id, user_signal, user_status, 
-      user_password, user_name, user_age, 
-      user_hobby, user_sex, user_tel, 
+    insert into user (user_id, user_signal, user_status,
+      user_password, user_name, user_age,
+      user_hobby, user_sex, user_tel,
       user_time)
-    values (#{userId,jdbcType=INTEGER}, #{userSignal,jdbcType=VARCHAR}, #{userStatus,jdbcType=VARCHAR}, 
-      #{userPassword,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userAge,jdbcType=SMALLINT}, 
-      #{userHobby,jdbcType=VARCHAR}, #{userSex,jdbcType=INTEGER}, #{userTel,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=INTEGER}, #{userSignal,jdbcType=VARCHAR}, #{userStatus,jdbcType=VARCHAR},
+      #{userPassword,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userAge,jdbcType=SMALLINT},
+      #{userHobby,jdbcType=VARCHAR}, #{userSex,jdbcType=INTEGER}, #{userTel,jdbcType=VARCHAR},
       #{userTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.xupt.ttms.model.User">

@@ -934,8 +934,23 @@ public class PlayExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlayRecommendIsNull() {
+            addCriterion("play_recommend is null");
+            return (Criteria) this;
+        }
+
         public Criteria andPlayRecommendIsNotNull() {
             addCriterion("play_recommend is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayRecommendEqualTo(String value) {
+            addCriterion("play_recommend =", value, "playRecommend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayRecommendNotEqualTo(String value) {
+            addCriterion("play_recommend <>", value, "playRecommend");
             return (Criteria) this;
         }
 

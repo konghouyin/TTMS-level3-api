@@ -14,7 +14,7 @@
     <result column="play_pic" jdbcType="VARCHAR" property="playPic" />
     <result column="play_link" jdbcType="VARCHAR" property="playLink" />
     <result column="play_path" jdbcType="VARCHAR" property="playPath" />
-    <result column="play_recommend" jdbcType="SMALLINT" property="playRecommend" />
+    <result column="play_recommend" jdbcType="VARCHAR" property="playRecommend" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xupt.ttms.model.Play">
     <result column="play_message" jdbcType="LONGVARCHAR" property="playMessage" />
@@ -142,7 +142,7 @@
       #{playPerformer,jdbcType=VARCHAR}, #{playType,jdbcType=VARCHAR}, #{playLength,jdbcType=VARCHAR}, 
       #{playCountry,jdbcType=VARCHAR}, #{playLanguage,jdbcType=VARCHAR}, #{playStatus,jdbcType=VARCHAR}, 
       #{playPic,jdbcType=VARCHAR}, #{playLink,jdbcType=VARCHAR}, #{playPath,jdbcType=VARCHAR}, 
-      #{playRecommend,jdbcType=SMALLINT}, #{playMessage,jdbcType=LONGVARCHAR})
+      #{playRecommend,jdbcType=VARCHAR}, #{playMessage,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xupt.ttms.model.Play">
     insert into play
@@ -228,7 +228,7 @@
         #{playPath,jdbcType=VARCHAR},
       </if>
       <if test="playRecommend != null">
-        #{playRecommend,jdbcType=SMALLINT},
+        #{playRecommend,jdbcType=VARCHAR},
       </if>
       <if test="playMessage != null">
         #{playMessage,jdbcType=LONGVARCHAR},
@@ -281,7 +281,7 @@
         play_path = #{record.playPath,jdbcType=VARCHAR},
       </if>
       <if test="record.playRecommend != null">
-        play_recommend = #{record.playRecommend,jdbcType=SMALLINT},
+        play_recommend = #{record.playRecommend,jdbcType=VARCHAR},
       </if>
       <if test="record.playMessage != null">
         play_message = #{record.playMessage,jdbcType=LONGVARCHAR},
@@ -305,7 +305,7 @@
       play_pic = #{record.playPic,jdbcType=VARCHAR},
       play_link = #{record.playLink,jdbcType=VARCHAR},
       play_path = #{record.playPath,jdbcType=VARCHAR},
-      play_recommend = #{record.playRecommend,jdbcType=SMALLINT},
+      play_recommend = #{record.playRecommend,jdbcType=VARCHAR},
       play_message = #{record.playMessage,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -325,7 +325,7 @@
       play_pic = #{record.playPic,jdbcType=VARCHAR},
       play_link = #{record.playLink,jdbcType=VARCHAR},
       play_path = #{record.playPath,jdbcType=VARCHAR},
-      play_recommend = #{record.playRecommend,jdbcType=SMALLINT}
+      play_recommend = #{record.playRecommend,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -367,7 +367,7 @@
         play_path = #{playPath,jdbcType=VARCHAR},
       </if>
       <if test="playRecommend != null">
-        play_recommend = #{playRecommend,jdbcType=SMALLINT},
+        play_recommend = #{playRecommend,jdbcType=VARCHAR},
       </if>
       <if test="playMessage != null">
         play_message = #{playMessage,jdbcType=LONGVARCHAR},
@@ -388,7 +388,7 @@
       play_pic = #{playPic,jdbcType=VARCHAR},
       play_link = #{playLink,jdbcType=VARCHAR},
       play_path = #{playPath,jdbcType=VARCHAR},
-      play_recommend = #{playRecommend,jdbcType=SMALLINT},
+      play_recommend = #{playRecommend,jdbcType=VARCHAR},
       play_message = #{playMessage,jdbcType=LONGVARCHAR}
     where play_id = #{playId,jdbcType=INTEGER}
   </update>
@@ -405,7 +405,7 @@
       play_pic = #{playPic,jdbcType=VARCHAR},
       play_link = #{playLink,jdbcType=VARCHAR},
       play_path = #{playPath,jdbcType=VARCHAR},
-      play_recommend = #{playRecommend,jdbcType=SMALLINT}
+      play_recommend = #{playRecommend,jdbcType=VARCHAR}
     where play_id = #{playId,jdbcType=INTEGER}
   </update>
 </mapper>
