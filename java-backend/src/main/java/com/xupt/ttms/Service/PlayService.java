@@ -37,7 +37,7 @@ public class PlayService {
     @Transactional
     public int updatePlay(data data){
         Play play1 = mapper.selectByPrimaryKey(data.getPlayId());
-        if(play1==null){
+        if(play1==null || play1.getPlayStatus().equals("-1")){
             return 2;
         }
 
