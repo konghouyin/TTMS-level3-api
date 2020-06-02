@@ -12,6 +12,7 @@ import com.xupt.ttms.mapper.PlayMapper;
 import com.xupt.ttms.model.Comment;
 import com.xupt.ttms.model.Play;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class CommentController {
     PlayMapper playMapper;
 
     @PostMapping("/get")
+    @Transactional
     public Object getByPlay(@RequestBody String json) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         TransDTO transDTO = mapper.readValue(json, TransDTO.class);

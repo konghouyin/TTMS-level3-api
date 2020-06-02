@@ -27,6 +27,8 @@ public class CommentService {
     ReportMapper reportMapper;
     @Autowired
     UserMapper userMapper;
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List getByPlay(Integer playId){
         CommentExample example = new CommentExample();
         example.createCriteria().andPlayIdEqualTo(playId)
