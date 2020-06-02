@@ -1,6 +1,6 @@
 module.exports = {
 	sql: {
-		connectionLimit: 10,
+		connectionLimit: 3,
 		host: '132.232.169.227',
 		user: 'online',
 		password: 'Hashmap_1973',
