@@ -19,8 +19,8 @@ import java.util.Objects;
 public class UploadController {
 
 
-    private String UPLOAD_FOLDER="/root/ttms-v3/fileUpload/";
-    //private String UPLOAD_FOLDER="C:\\Users\\加雷斯 贝尔\\Desktop\\";
+    //private String UPLOAD_FOLDER="/root/ttms-v3/fileUpload/";
+    private String UPLOAD_FOLDER="C:\\Users\\加雷斯 贝尔\\Desktop\\";
 
 
     @PostMapping("/singlefile")

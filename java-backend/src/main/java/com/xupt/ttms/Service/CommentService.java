@@ -1,16 +1,19 @@
 package com.xupt.ttms.Service;
 
+import com.xupt.ttms.dto.CommentDTO;
 import com.xupt.ttms.enums.CommentEnum;
 import com.xupt.ttms.enums.ReportEnum;
 import com.xupt.ttms.mapper.CommentMapper;
 import com.xupt.ttms.mapper.PlayMapper;
 import com.xupt.ttms.mapper.ReportMapper;
+import com.xupt.ttms.mapper.UserMapper;
 import com.xupt.ttms.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,13 +25,26 @@ public class CommentService {
     PlayMapper playMapper;
     @Autowired
     ReportMapper reportMapper;
-    public List<Comment> getByPlay(Integer playId){
+    @Autowired
+    UserMapper userMapper;
+    public List getByPlay(Integer playId){
         CommentExample example = new CommentExample();
         example.createCriteria().andPlayIdEqualTo(playId)
                 .andCommentStatusEqualTo((short) CommentEnum.GOOD.getType());
 
+        List<Object> list = new ArrayList<>();
+
         List<Comment> comments = mapper.selectByExample(example);
-        return comments;
+        for (Comment comment:comments){
+            User user = userMapper.selectByPrimaryKey(comment.getUserId());
+
+            CommentDTO dto = new CommentDTO();
+            dto.setUser(user);
+            dto.setComment(comment);
+
+            list.add(dto);
+        }
+        return list;
     }
 
     @Transactional
@@ -81,12 +97,30 @@ public class CommentService {
         return true;
     }
 
-    public List<Comment> getByStatus() {
+    @Transactional()
+    public List getByStatus() {
 
-        CommentExample example = new CommentExample();
-        example.createCriteria().andCommentStatusNotEqualTo((short) CommentEnum.GOOD.getType());
+        ReportExample example = new ReportExample();
+        example.createCriteria().andReportStatusEqualTo((short) ReportEnum.Processing.getStatus());
 
-        List<Comment> comments = mapper.selectByExample(example);
+        List<CommentDTO> comments= new ArrayList<>();
+        List<Report> reports = reportMapper.selectByExample(example);
+        for (Report report:reports
+             ) {
+            Comment comment = mapper.selectByPrimaryKey(report.getCommentId());
+            User user = userMapper.selectByPrimaryKey(report.getUserId());
+            Play play = playMapper.selectByPrimaryKey(comment.getPlayId());
+
+            CommentDTO commentDTO = new CommentDTO();
+            commentDTO.setComment(comment);
+            commentDTO.setPlay(play);
+            commentDTO.setReport(report);
+            commentDTO.setUser(user);
+
+            comments.add(commentDTO);
+        }
+
+        //List<Comment> comments = mapper.selectByExample(example);
         return comments;
     }
 

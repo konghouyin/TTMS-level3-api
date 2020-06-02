@@ -19,8 +19,8 @@ public class ReportTypeService {
     public int reportTypeAdd(ReportType type){
         ReportTypeExample example = new ReportTypeExample();
         example.createCriteria().andReporttypeNameEqualTo(type.getReporttypeName());
-        ReportType select = reportTypeMapper.selectByExample(example).get(0);
-        if(select!=null && select.getReporttypeStatus()==2){
+        List<ReportType> select = reportTypeMapper.selectByExample(example);
+        if(select.size()>0 && select.get(0).getReporttypeStatus()!=1){
             ReportType type1 = new ReportType();
             type1.setReporttypeStatus((short) ReportTypeEnum.WELL.getType());
 
@@ -29,7 +29,7 @@ public class ReportTypeService {
             reportTypeMapper.updateByExampleSelective(type1,example1);
 
             return 2;
-        }else if (select.getReporttypeStatus()==1){
+        }else if (select.size()>0 && select.get(0).getReporttypeStatus()==1){
             return 3;
         }
         int insert = reportTypeMapper.insert(type);

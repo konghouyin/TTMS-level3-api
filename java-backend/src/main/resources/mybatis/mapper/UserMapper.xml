@@ -3,13 +3,14 @@
 <mapper namespace="com.xupt.ttms.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.xupt.ttms.model.User">
     <id column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="user_status" jdbcType="CHAR" property="userStatus" />
+    <result column="user_signal" jdbcType="VARCHAR" property="userSignal" />
+    <result column="user_status" jdbcType="VARCHAR" property="userStatus" />
     <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_age" jdbcType="SMALLINT" property="userAge" />
-    <result column="user_sex" jdbcType="SMALLINT" property="userSex" />
+    <result column="user_hobby" jdbcType="VARCHAR" property="userHobby" />
+    <result column="user_sex" jdbcType="INTEGER" property="userSex" />
     <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
-    <result column="user_mail" jdbcType="VARCHAR" property="userMail" />
     <result column="user_time" jdbcType="TIMESTAMP" property="userTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, user_status, user_password, user_name, user_age, user_sex, user_tel, user_mail, 
-    user_time
+    user_id, user_signal, user_status, user_password, user_name, user_age, user_hobby, 
+    user_sex, user_tel, user_time
   </sql>
   <select id="selectByExample" parameterType="com.xupt.ttms.model.UserExample" resultMap="BaseResultMap">
     select
@@ -105,20 +106,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xupt.ttms.model.User">
-    insert into user (user_id, user_status, user_password, 
-      user_name, user_age, user_sex, 
-      user_tel, user_mail, user_time
-      )
-    values (#{userId,jdbcType=INTEGER}, #{userStatus,jdbcType=CHAR}, #{userPassword,jdbcType=VARCHAR}, 
-      #{userName,jdbcType=VARCHAR}, #{userAge,jdbcType=SMALLINT}, #{userSex,jdbcType=SMALLINT}, 
-      #{userTel,jdbcType=VARCHAR}, #{userMail,jdbcType=VARCHAR}, #{userTime,jdbcType=TIMESTAMP}
-      )
+    insert into user (user_id, user_signal, user_status, 
+      user_password, user_name, user_age, 
+      user_hobby, user_sex, user_tel, 
+      user_time)
+    values (#{userId,jdbcType=INTEGER}, #{userSignal,jdbcType=VARCHAR}, #{userStatus,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userAge,jdbcType=SMALLINT}, 
+      #{userHobby,jdbcType=VARCHAR}, #{userSex,jdbcType=INTEGER}, #{userTel,jdbcType=VARCHAR}, 
+      #{userTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.xupt.ttms.model.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="userSignal != null">
+        user_signal,
       </if>
       <if test="userStatus != null">
         user_status,
@@ -132,14 +136,14 @@
       <if test="userAge != null">
         user_age,
       </if>
+      <if test="userHobby != null">
+        user_hobby,
+      </if>
       <if test="userSex != null">
         user_sex,
       </if>
       <if test="userTel != null">
         user_tel,
-      </if>
-      <if test="userMail != null">
-        user_mail,
       </if>
       <if test="userTime != null">
         user_time,
@@ -149,8 +153,11 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="userSignal != null">
+        #{userSignal,jdbcType=VARCHAR},
+      </if>
       <if test="userStatus != null">
-        #{userStatus,jdbcType=CHAR},
+        #{userStatus,jdbcType=VARCHAR},
       </if>
       <if test="userPassword != null">
         #{userPassword,jdbcType=VARCHAR},
@@ -161,14 +168,14 @@
       <if test="userAge != null">
         #{userAge,jdbcType=SMALLINT},
       </if>
+      <if test="userHobby != null">
+        #{userHobby,jdbcType=VARCHAR},
+      </if>
       <if test="userSex != null">
-        #{userSex,jdbcType=SMALLINT},
+        #{userSex,jdbcType=INTEGER},
       </if>
       <if test="userTel != null">
         #{userTel,jdbcType=VARCHAR},
-      </if>
-      <if test="userMail != null">
-        #{userMail,jdbcType=VARCHAR},
       </if>
       <if test="userTime != null">
         #{userTime,jdbcType=TIMESTAMP},
@@ -187,8 +194,11 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.userSignal != null">
+        user_signal = #{record.userSignal,jdbcType=VARCHAR},
+      </if>
       <if test="record.userStatus != null">
-        user_status = #{record.userStatus,jdbcType=CHAR},
+        user_status = #{record.userStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.userPassword != null">
         user_password = #{record.userPassword,jdbcType=VARCHAR},
@@ -199,14 +209,14 @@
       <if test="record.userAge != null">
         user_age = #{record.userAge,jdbcType=SMALLINT},
       </if>
+      <if test="record.userHobby != null">
+        user_hobby = #{record.userHobby,jdbcType=VARCHAR},
+      </if>
       <if test="record.userSex != null">
-        user_sex = #{record.userSex,jdbcType=SMALLINT},
+        user_sex = #{record.userSex,jdbcType=INTEGER},
       </if>
       <if test="record.userTel != null">
         user_tel = #{record.userTel,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userMail != null">
-        user_mail = #{record.userMail,jdbcType=VARCHAR},
       </if>
       <if test="record.userTime != null">
         user_time = #{record.userTime,jdbcType=TIMESTAMP},
@@ -219,13 +229,14 @@
   <update id="updateByExample" parameterType="map">
     update user
     set user_id = #{record.userId,jdbcType=INTEGER},
-      user_status = #{record.userStatus,jdbcType=CHAR},
+      user_signal = #{record.userSignal,jdbcType=VARCHAR},
+      user_status = #{record.userStatus,jdbcType=VARCHAR},
       user_password = #{record.userPassword,jdbcType=VARCHAR},
       user_name = #{record.userName,jdbcType=VARCHAR},
       user_age = #{record.userAge,jdbcType=SMALLINT},
-      user_sex = #{record.userSex,jdbcType=SMALLINT},
+      user_hobby = #{record.userHobby,jdbcType=VARCHAR},
+      user_sex = #{record.userSex,jdbcType=INTEGER},
       user_tel = #{record.userTel,jdbcType=VARCHAR},
-      user_mail = #{record.userMail,jdbcType=VARCHAR},
       user_time = #{record.userTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -234,8 +245,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.xupt.ttms.model.User">
     update user
     <set>
+      <if test="userSignal != null">
+        user_signal = #{userSignal,jdbcType=VARCHAR},
+      </if>
       <if test="userStatus != null">
-        user_status = #{userStatus,jdbcType=CHAR},
+        user_status = #{userStatus,jdbcType=VARCHAR},
       </if>
       <if test="userPassword != null">
         user_password = #{userPassword,jdbcType=VARCHAR},
@@ -246,14 +260,14 @@
       <if test="userAge != null">
         user_age = #{userAge,jdbcType=SMALLINT},
       </if>
+      <if test="userHobby != null">
+        user_hobby = #{userHobby,jdbcType=VARCHAR},
+      </if>
       <if test="userSex != null">
-        user_sex = #{userSex,jdbcType=SMALLINT},
+        user_sex = #{userSex,jdbcType=INTEGER},
       </if>
       <if test="userTel != null">
         user_tel = #{userTel,jdbcType=VARCHAR},
-      </if>
-      <if test="userMail != null">
-        user_mail = #{userMail,jdbcType=VARCHAR},
       </if>
       <if test="userTime != null">
         user_time = #{userTime,jdbcType=TIMESTAMP},
@@ -263,13 +277,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xupt.ttms.model.User">
     update user
-    set user_status = #{userStatus,jdbcType=CHAR},
+    set user_signal = #{userSignal,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=VARCHAR},
       user_password = #{userPassword,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR},
       user_age = #{userAge,jdbcType=SMALLINT},
-      user_sex = #{userSex,jdbcType=SMALLINT},
+      user_hobby = #{userHobby,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=INTEGER},
       user_tel = #{userTel,jdbcType=VARCHAR},
-      user_mail = #{userMail,jdbcType=VARCHAR},
       user_time = #{userTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>

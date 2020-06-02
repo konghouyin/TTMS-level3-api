@@ -933,6 +933,12 @@ public class PlayExample {
             addCriterion("play_path not between", value1, value2, "playPath");
             return (Criteria) this;
         }
+
+        public Criteria andPlayRecommendIsNotNull() {
+            addCriterion("play_recommend is not null");
+            return (Criteria) this;
+        }
+
     }
 
     public static class Criteria extends GeneratedCriteria {

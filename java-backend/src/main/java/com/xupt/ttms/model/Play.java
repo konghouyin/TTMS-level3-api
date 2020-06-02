@@ -27,6 +27,16 @@ public class Play {
 
     private String playMessage;
 
+    private short playRecommend;
+
+    public short getPlayRecommend() {
+        return playRecommend;
+    }
+
+    public void setPlayRecommend(short playRecommend) {
+        this.playRecommend = playRecommend;
+    }
+
     public Integer getPlayId() {
         return playId;
     }

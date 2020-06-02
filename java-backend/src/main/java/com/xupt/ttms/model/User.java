@@ -3,6 +3,8 @@ package com.xupt.ttms.model;
 import java.util.Date;
 
 public class User {
+    private String userSignal;
+
     private Integer userId;
 
     private String userStatus;
@@ -17,9 +19,25 @@ public class User {
 
     private String userTel;
 
-    private String userMail;
+    private String userHobby;
 
     private Date userTime;
+
+    public String getUserHobby() {
+        return userHobby;
+    }
+
+    public void setUserHobby(String userHobby) {
+        this.userHobby = userHobby;
+    }
+
+    public String getUserSignal() {
+        return userSignal;
+    }
+
+    public void setUserSignal(String userSignal) {
+        this.userSignal = userSignal;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -75,14 +93,6 @@ public class User {
 
     public void setUserTel(String userTel) {
         this.userTel = userTel == null ? null : userTel.trim();
-    }
-
-    public String getUserMail() {
-        return userMail;
-    }
-
-    public void setUserMail(String userMail) {
-        this.userMail = userMail == null ? null : userMail.trim();
     }
 
     public Date getUserTime() {

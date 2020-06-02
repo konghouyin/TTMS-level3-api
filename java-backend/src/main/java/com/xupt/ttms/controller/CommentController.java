@@ -10,9 +10,7 @@ import com.xupt.ttms.enums.CommentEnum;
 import com.xupt.ttms.enums.returnType;
 import com.xupt.ttms.model.Comment;
 import com.xupt.ttms.model.Play;
-import com.xupt.ttms.model.ReportType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,6 +96,7 @@ public class CommentController {
         try {
             byStatus = service.getByStatus();
         }catch (Exception e){
+            e.printStackTrace();
             returnUTO uto = new returnUTO();
             uto.setStyle(returnType.DATABASEERR.getStyle());
             uto.setMsg(returnType.DATABASEERR.getMsg());

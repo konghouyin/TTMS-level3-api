@@ -54,7 +54,7 @@
 <!--        <table schema="ttms" tableName="comment" domainObjectName="Comment"></table>-->
 <!--        <table schema="ttms" tableName="play" domainObjectName="Play"></table>-->
 <!--        <table schema="ttms" tableName="user" domainObjectName="User"></table>-->
-        <table schema="ttms" tableName="play" domainObjectName="Play"></table>
-
+<!--        <table schema="ttms" tableName="play" domainObjectName="Play"></table>-->
+        <table schema="ttms" tableName="user" domainObjectName="User"></table>
     </context>
 </generatorConfiguration>
