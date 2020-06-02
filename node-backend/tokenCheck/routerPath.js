@@ -90,6 +90,7 @@ const router = {
 	"/reportType/add":reportConfig,
 	"/reportType/del":reportConfig,
 	
+	"/comment/get":userCommentConfig,
 	"/report/add":userCommentConfig,
 	"/comment/report":reportConfig,
 	"/comment/del":reportConfig,

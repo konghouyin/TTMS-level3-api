@@ -17,6 +17,11 @@ const idRule = {
 	}
 }
 
+const playIdRule = {
+	playId: {
+		type: "int",
+	}
+}
 const commentAddRule = {
 	playId:{
 		type: "int",
@@ -37,7 +42,8 @@ const reportRouter = {
 	"/TTMS-v3/api/comment/report":empty,
 	"/TTMS-v3/api/comment/del":idRule,
 	"/TTMS-v3/api/comment/reject":idRule,
-	"/TTMS-v3/api/comment/add":commentAddRule
+	"/TTMS-v3/api/comment/add":commentAddRule,
+	"/TTMS-v3/api/comment/get":playIdRule,
 }
 
 module.exports = {
