@@ -47,7 +47,7 @@ public class CommentController {
         try {
            all = service.getByPlay(data);
         }catch (Exception e){
-
+            e.printStackTrace();
             uto.setStyle(returnType.DATABASEERR.getStyle());
             uto.setMsg(returnType.DATABASEERR.getMsg());
 
