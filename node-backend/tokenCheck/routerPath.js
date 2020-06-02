@@ -61,6 +61,13 @@ const reportConfig = {
 	status: [userStatusTable.comment]
 }
 //举报管理
+
+const recommendConfig = {
+	point: java,
+	status: [userStatusTable.recommend]
+}
+//推荐流管理
+
 //配置聚合
 
 const router = {
@@ -108,6 +115,10 @@ const router = {
 	"/ticketMessage":ticketSelectConfig,
 	"/cancelSale":ticketSelectConfig,
 	
+	
+	"/recommend/get":recommendConfig,
+	"/recommend/add":recommendConfig,
+	"/link/get":recommendConfig,
 }
 
 module.exports = {
