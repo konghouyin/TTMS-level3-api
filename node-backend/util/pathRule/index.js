@@ -7,6 +7,7 @@ const planRule = require("./planRule.js").planRouter;
 const saleRule = require("./saleRule.js").saleRouter;
 const reportRule = require("./reportRule.js").reportRouter;
 const recommendRule = require("./recommendRule.js").recommendRouter;
+const likeRule = require("./likeRule.js").likeRouter;
 
 module.exports = {
 	router: Object.assign({},
@@ -18,6 +19,7 @@ module.exports = {
 		planRule,
 		saleRule,
 		reportRule,
-		recommendRule
+		recommendRule,
+		likeRule
 	)
 }

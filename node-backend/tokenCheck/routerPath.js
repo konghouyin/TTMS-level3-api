@@ -119,6 +119,15 @@ const router = {
 	"/recommend/get":recommendConfig,
 	"/recommend/add":recommendConfig,
 	"/link/get":recommendConfig,
+	
+	
+	
+	"/userwant/get":userCommentConfig,
+	"/userwant/add":userCommentConfig,
+	"/userwant/del":userCommentConfig,
+	"/userwant/getAll":userCommentConfig
+	
+	
 }
 
 module.exports = {
