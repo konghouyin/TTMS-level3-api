@@ -97,7 +97,7 @@ server.post('/planList', async function(req, res) {
 //查询某一个电影近5天的演出计划
 
 
-server.get('/ticketList', async function(req, res) {
+server.post('/ticketList', async function(req, res) {
 	let obj = req.obj.data;
 	let sqlString = sql.select(['plan_id'], 'plan', 'plan_id=' + sql.escape(obj.id));
 	try {
@@ -116,8 +116,25 @@ server.get('/ticketList', async function(req, res) {
 		});
 		return;
 	}
+	sqlString = sql.select(['play.play_id', 'play.play_name', 'play.play_director', 'play.play_performer',
+			'play.play_type', 'play.play_length', 'play.play_country', 'play.play_language', 'play.play_pic',
+			'play.play_link', 'play.play_path', 'room.room_id', 'room.room_row', 'room_col'
+		], 'room,play,plan',
+		'plan.play_id=play.play_id and plan.room_id=room.room_id and plan_id=' + sql.escape(obj.id));
+	try {
+		var selectAnsData = await sql.sever(pool, sqlString);
+	} catch (err) {
+		send(res, {
+			"msg": err,
+			"style": -2
+		});
+		return;
+	}
+	//查询剧目信息
 
-	sqlString = sql.select(['ticket_id', 'seat_id'], 'ticket', 'plan_id=' + sql.escape(obj.id));
+
+	sqlString = sql.select(['ticket.ticket_id', 'seat.seat_id', 'seat.seat_row', 'seat.seat_col'], 'ticket,seat',
+		'plan_id=' + sql.escape(obj.id));
 	//查询所有票
 	try {
 		var selectAnsAll = await sql.sever(pool, sqlString);
@@ -130,8 +147,9 @@ server.get('/ticketList', async function(req, res) {
 	}
 
 
-	sqlString = sql.select(['ticket_id', 'seat_id'], 'ticket', 'plan_id=' + sql.escape(obj.id) +
-		' and (ticket_status=1 or (ticket_status=2 and ticket_time > date_sub(NOW(),interval 10 minute) or ticket_status=3))'
+	sqlString = sql.select(['ticket.ticket_id', 'seat.seat_id', 'seat.seat_row', 'seat.seat_col'],
+		'ticket,seat', 'ticket.seat_id=seat.seat_id and ticket.plan_id=' + sql.escape(obj.id) +
+		' and (ticket.ticket_status=1 or (ticket.ticket_status=2 and ticket.ticket_time > date_sub(NOW(),interval 10 minute) or ticket.ticket_status=3))'
 	);
 	//查询已卖出的票
 	try {
@@ -146,6 +164,7 @@ server.get('/ticketList', async function(req, res) {
 
 	send(res, {
 		"msg": "查询成功！",
+		"data": selectAnsData,
 		"dataAll": selectAnsAll,
 		"dataSale": selectAnsSale,
 		"style": 1
