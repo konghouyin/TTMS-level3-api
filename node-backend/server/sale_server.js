@@ -70,6 +70,16 @@ server.post('/planList', async function(req, res) {
 		' and Date(plan.plan_startime) between Date(NOW()) and Date(date_add(NOW(), interval 5 day))');
 	try {
 		var selectAns = await sql.sever(pool, sqlString + ' ORDER BY plan.plan_startime');
+		var back = [];
+		for (let i = 0; i < selectAns.length; i++) {
+			sqlString = sql.select(['count(*)'], 'plan,ticket',
+				'plan.plan_id=ticket.plan_id and (ticket.ticket_status=0 or (ticket.ticket_status=2 and ticket.ticket_time < date_sub(NOW(),interval 10 minute))) and plan.plan_id=' +
+				sql.escape(selectAns[i].plan_id));
+			let seatAns = await sql.sever(pool, sqlString);
+			back.push(Object.assign({}, selectAns[i], {
+				seat_num: seatAns[0]["count(*)"]
+			}))
+		}
 	} catch (err) {
 		send(res, {
 			"msg": err,
@@ -79,7 +89,7 @@ server.post('/planList', async function(req, res) {
 	}
 	send(res, {
 		"msg": "查询成功！",
-		"data": selectAns,
+		"data": back,
 		"style": 1
 	});
 
@@ -197,7 +207,8 @@ server.post('/order', async function(req, res) {
 		}
 
 
-		let sqlStringSelect = sql.select(['plan_money'], 'ticket,plan', 'ticket.plan_id=plan.plan_id and ticket_id=' + sql
+		let sqlStringSelect = sql.select(['plan_money'], 'ticket,plan', 'ticket.plan_id=plan.plan_id and ticket_id=' +
+			sql
 			.escape(ticketArr[0]));
 		let money = await sql.stepsql(connect, sqlStringSelect);
 
@@ -233,7 +244,9 @@ server.post('/selectOrder', async function(req, res) {
 	let obj = req.obj.data;
 
 	let arr = []; //购票数组
-	let sqlString = sql.select(['orderticket_money', 'orderticket_history', 'orderticket_time', 'orderticket_status'],
+	let sqlString = sql.select(['orderticket_money', 'orderticket_history', 'orderticket_time',
+			'orderticket_status'
+		],
 		'orderticket', 'orderticket_id=' + sql.escape(obj.id));
 	try {
 		selectBase = await sql.sever(pool, 'SELECT distinct ' + sqlString.split('SELECT')[1]);
@@ -266,7 +279,7 @@ server.post('/selectOrder', async function(req, res) {
 
 
 	ticketStr = 'ticket_id=' + num.join(' or ticket_id=');
-	sqlString = sql.select(['seat.seat_row', 'seat.seat_col','ticket.ticket_status','ticket.ticket_id'],
+	sqlString = sql.select(['seat.seat_row', 'seat.seat_col', 'ticket.ticket_status', 'ticket.ticket_id'],
 		'seat,ticket', 'ticket.seat_id=seat.seat_id  and (' + ticketStr + ')');
 	try {
 		selectTicket = await sql.sever(pool, sqlString);
@@ -332,7 +345,7 @@ server.post('/selectAllOrder', async function(req, res) {
 		arr[i].play = selectPlay[0];
 
 		ticketStr = 'ticket_id=' + num.join(' or ticket_id=');
-		sqlString = sql.select(['seat.seat_row', 'seat.seat_col','ticket.ticket_status','ticket.ticket_id'],
+		sqlString = sql.select(['seat.seat_row', 'seat.seat_col', 'ticket.ticket_status', 'ticket.ticket_id'],
 			'seat,ticket', 'ticket.seat_id=seat.seat_id  and (' + ticketStr + ')');
 		try {
 			selectTicket = await sql.sever(pool, sqlString);
@@ -392,8 +405,9 @@ server.post('/saleOrder', async function(req, res) {
 
 		let arr = JSON.parse(selectAns[0].orderticket_history); //ticketId集合
 
-		sqlString = sql.select(['plan.plan_money'], 'ticket,plan', 'ticket.plan_id=plan.plan_id and ticket_id=' + sql.escape(
-			arr[0]));
+		sqlString = sql.select(['plan.plan_money'], 'ticket,plan', 'ticket.plan_id=plan.plan_id and ticket_id=' + sql
+			.escape(
+				arr[0]));
 		selectAns = await sql.stepsql(connect, sqlString);
 		//查询票价
 		let money = selectAns[0].plan_money;
@@ -470,8 +484,9 @@ server.post('/cancelOrder', async function(req, res) {
 
 
 		for (let i = 0; i < arr.length; i++) {
-			let sqlString = sql.update('ticket', ['ticket_status'], ['0'], 'ticket_status=2 and ticket_id=' + sql.escape(arr[
-				i]));
+			let sqlString = sql.update('ticket', ['ticket_status'], ['0'], 'ticket_status=2 and ticket_id=' + sql.escape(
+				arr[
+					i]));
 			await sql.stepsql(connect, sqlString);
 		}
 		//恢复票状态
