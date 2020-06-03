@@ -1,9 +1,10 @@
 package com.xupt.ttms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class User {
-
 
     private String userSignal;
 
@@ -23,7 +24,7 @@ public class User {
 
     private String userTel;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date userTime;
 
     public String getUserSignal() {

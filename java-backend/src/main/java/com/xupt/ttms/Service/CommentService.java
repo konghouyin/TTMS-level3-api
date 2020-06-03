@@ -1,12 +1,10 @@
 package com.xupt.ttms.Service;
 
 import com.xupt.ttms.dto.CommentDTO;
+import com.xupt.ttms.dto.CommentUtils;
 import com.xupt.ttms.enums.CommentEnum;
 import com.xupt.ttms.enums.ReportEnum;
-import com.xupt.ttms.mapper.CommentMapper;
-import com.xupt.ttms.mapper.PlayMapper;
-import com.xupt.ttms.mapper.ReportMapper;
-import com.xupt.ttms.mapper.UserMapper;
+import com.xupt.ttms.mapper.*;
 import com.xupt.ttms.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,8 @@ public class CommentService {
     ReportMapper reportMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    ReportTypeMapper reportTypeMapper;
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public List getByPlay(Integer playId){
@@ -109,23 +109,30 @@ public class CommentService {
         ReportExample example = new ReportExample();
         example.createCriteria().andReportStatusEqualTo((short) ReportEnum.Processing.getStatus());
 
-        List<CommentDTO> comments= new ArrayList<>();
+        List<CommentUtils> comments= new ArrayList<>();
         List<Report> reports = reportMapper.selectByExample(example);
         for (Report report:reports
              ) {
             Comment comment = mapper.selectByPrimaryKey(report.getCommentId());
             User user = userMapper.selectByPrimaryKey(report.getUserId());
+            User user1 = userMapper.selectByPrimaryKey(comment.getUserId());
             Play play = playMapper.selectByPrimaryKey(comment.getPlayId());
+            ReportType type = reportTypeMapper.selectByPrimaryKey(report.getReporttypeId());
             if(play.getPlayStatus().equals("-1")){
                 continue;
             }
-            CommentDTO commentDTO = new CommentDTO();
-            commentDTO.setComment(comment);
-            commentDTO.setPlay(play);
-            commentDTO.setReport(report);
-            commentDTO.setUser(user);
+            CommentUtils commentUtils = new CommentUtils();
+            commentUtils.setPlayId(play.getPlayId());
+            commentUtils.setPlayName(play.getPlayName());
+            commentUtils.setReportType(type.getReporttypeName());
+            commentUtils.setReportText(report.getReportText());
+            commentUtils.setUserName(user.getUserName());
+            commentUtils.setCommentText(comment.getCommentText());
+            commentUtils.setCommentTime(comment.getCommentTime());
+            commentUtils.setReportTime(report.getReportTime());
+            commentUtils.setTargetUserName(user1.getUserName());
 
-            comments.add(commentDTO);
+            comments.add(commentUtils);
         }
 
         //List<Comment> comments = mapper.selectByExample(example);

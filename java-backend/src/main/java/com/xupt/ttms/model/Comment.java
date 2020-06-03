@@ -1,5 +1,6 @@
 package com.xupt.ttms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ public class Comment {
 
     private String commentText;
     @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date commentTime;
 
     private Short commentLevel;//评论分数

@@ -52,10 +52,11 @@
 <!--        <table schema="ttms" tableName="reporttype" domainObjectName="ReportType"></table>-->
 <!--        <table schema="ttms" tableName="report" domainObjectName="Report"></table>-->
 <!--        <table schema="ttms" tableName="comment" domainObjectName="Comment"></table>-->
-        <table schema="ttms" tableName="play" domainObjectName="Play"></table>
+<!--        <table schema="ttms" tableName="play" domainObjectName="Play"></table>-->
 <!--        <table schema="ttms" tableName="user" domainObjectName="User"></table>-->
 <!--        <table schema="ttms" tableName="play" domainObjectName="Play"></table>-->
 <!--        <table schema="ttms" tableName="user" domainObjectName="User"></table>-->
+        <table tableName="userwant" schema="ttms" domainObjectName="UserWant"></table>
 
     </context>
 </generatorConfiguration>
