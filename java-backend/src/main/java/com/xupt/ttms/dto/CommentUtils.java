@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 public class CommentUtils {
-    private int playId;
+    private int commentId;
     private String playName;
     private String userName;
     private String targetUserName;

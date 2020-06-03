@@ -122,7 +122,7 @@ public class CommentService {
                 continue;
             }
             CommentUtils commentUtils = new CommentUtils();
-            commentUtils.setPlayId(play.getPlayId());
+            commentUtils.setCommentId(comment.getCommentId());
             commentUtils.setPlayName(play.getPlayName());
             commentUtils.setReportType(type.getReporttypeName());
             commentUtils.setReportText(report.getReportText());
