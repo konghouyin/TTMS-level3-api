@@ -3,10 +3,7 @@ package com.xupt.ttms.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xupt.ttms.Service.UserWantService;
-import com.xupt.ttms.dto.TransDTO;
-import com.xupt.ttms.dto.returnDTO;
-import com.xupt.ttms.dto.returnUTO;
-import com.xupt.ttms.dto.userInfo;
+import com.xupt.ttms.dto.*;
 import com.xupt.ttms.mapper.PlayMapper;
 import com.xupt.ttms.model.Play;
 import com.xupt.ttms.model.User;
@@ -47,13 +44,18 @@ public class UserWantController {
         }
         int byPlayId = service.getByPlayId(playId, userId);
 
+        UserWantReturn wantReturn = new UserWantReturn();
+        if (playId==-2){
+            uto.setMsg("数据库异常");
+            uto.setStyle(-2);
+            return uto;
+        }
         switch (byPlayId){
-            case 1:{uto.setMsg("已想看");uto.setStyle(1);}break;
-            case 0:{uto.setMsg("尚未添加想看");uto.setStyle(0);}break;
-            case -2:{uto.setMsg("数据库异常");uto.setStyle(-2);}break;
+            case 1:{wantReturn.setMsg("已想看");wantReturn.setStyle(1);wantReturn.setData(1);}break;
+            case 0:{wantReturn.setMsg("尚未添加想看");wantReturn.setStyle(1);wantReturn.setData(0);}break;
             default:break;
         }
-        return uto;
+        return wantReturn;
     }
 
     @PostMapping("/add")
