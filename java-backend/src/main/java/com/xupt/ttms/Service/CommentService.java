@@ -64,13 +64,13 @@ public class CommentService {
                 example.createCriteria().andPlayIdEqualTo(comment.getPlayId())
                         .andUserIdEqualTo(comment.getUserId());
                 //.andCommentStatusEqualTo((short) CommentEnum.GOOD.getType());
-                Comment comments = mapper.selectByExample(example).get(0);
-                if(comments!=null&& comments.getCommentStatus()==CommentEnum.GOOD.getType()){
+                List<Comment> comments = mapper.selectByExample(example);
+                if(comments.size()>0&& comments.get(0).getCommentStatus()==CommentEnum.GOOD.getType()){
 
                     comment.setCommentTime(new Date());
                     mapper.updateByExampleSelective(comment,example);
                     return 2;
-                }else if(comments!=null&& comments.getCommentStatus()!=CommentEnum.GOOD.getType()){
+                }else if(comments.size()>0&& comments.get(0).getCommentStatus()!=CommentEnum.GOOD.getType()){
                     return -3;
                 }
                 else{
