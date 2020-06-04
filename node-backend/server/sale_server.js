@@ -134,7 +134,7 @@ server.post('/ticketList', async function(req, res) {
 
 
 	sqlString = sql.select(['ticket.ticket_id', 'seat.seat_id', 'seat.seat_row', 'seat.seat_col'], 'ticket,seat',
-		'plan_id=' + sql.escape(obj.id));
+		'ticket.seat_id=seat.seat_id and plan_id=' + sql.escape(obj.id));
 	//查询所有票
 	try {
 		var selectAnsAll = await sql.sever(pool, sqlString);
