@@ -117,8 +117,8 @@ server.post('/ticketList', async function(req, res) {
 		return;
 	}
 	sqlString = sql.select(['play.play_id', 'play.play_name', 'play.play_director', 'play.play_performer',
-			'play.play_type', 'play.play_length', 'play.play_country', 'play.play_language', 'play.play_pic',
-			'play.play_link', 'play.play_path', 'room.room_id', 'room.room_row', 'room_col'
+			'play.play_type', 'play.play_length', 'play.play_country', 'play.play_pic', 'plan.plan_language',
+			'plan.plan_startime', 'plan.plan_money', 'room.room_id', 'room.room_row', 'room_col'
 		], 'room,play,plan',
 		'plan.play_id=play.play_id and plan.room_id=room.room_id and plan_id=' + sql.escape(obj.id));
 	try {
